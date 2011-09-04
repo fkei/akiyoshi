@@ -1,0 +1,12 @@
+{
+    "mode": "local",
+    "log": {
+        "file": "../conf/log.conf"
+    },
+    "database": {
+        "type": "sqlite",
+        "bind": "sqlite:////tmp/akiyoshi.db",
+        "pool_size": 10,
+        "max_overflow": 10
+    }
+}
