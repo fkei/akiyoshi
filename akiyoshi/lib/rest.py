@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
+import os.path
+import sys
 from datetime import datetime
 import traceback
 
@@ -21,8 +24,20 @@ class Rest:
         self.__template__.dir = self.__class__.__name__.lower()
         self.__template__.file = self.__class__.__name__.lower()
         self.__template__.media = 'html'
+        self.download = web.Storage()
 
         self.view = web.Storage()
+
+        # download define
+        self.DOWNLOAD_TYPE_NORMAL = 0
+        self.DOWNLOAD_TYPE_FILE = 1
+        self.DOWNLOAD_TYPE_STREAM = 2
+
+        # download
+        self.download.file = None
+        self.download.stream = None
+        self.download.type = self.DOWNLOAD_TYPE_NORMAL
+        self.download.once = False
 
     def _pre(self, *param, **params):
         pass
@@ -38,20 +53,55 @@ class Rest:
         if isinstance(f, web.HTTPError) is True:
             raise f
 
-        if f is True:
-            path = '%s/%s.%s' % (
-                self.__template__.dir,
-                self.__template__.file,
-                self.__template__.media)
 
-        try:
-            _r = self.__mako_render(path,
-                             title='akiyoshi', view=self.view)
+        if self.download.type == self.DOWNLOAD_TYPE_NORMAL:
+            # nomal process
+            if f is True:
+                path = '%s/%s.%s' % (
+                    self.__template__.dir,
+                    self.__template__.file,
+                    self.__template__.media)
+
+            try:
+                _r = self.__mako_render(path,
+                                 title='akiyoshi', view=self.view)
+                return _r
+            except:
+                return exceptions.html_error_template().render(full=True)
+
+        elif self.download.type == self.DOWNLOAD_TYPE_FILE:
+            # file download
+            if self.download.file is None or os.path.isfile(self.download.file) is False:
+                self.log.error('Could not find files to download. - path=%s' % self.download.file)
+                raise web.internalerror()
+
+            web.header('Content-Type', 'Content-type: application/octet-stream', True)
+            fp = open(self.download.file , "rb")
+            try:
+                _r = fp.read()
+            finally:
+                fp.close()
+
+            if self.download.once is True and os.path.isfile(self.download.file) is True:
+                os.unlink(self.download.file)
             return _r
-        except:
-            return exceptions.html_error_template().render(full=True)
+
+        elif self.download.type == self.DOWNLOAD_TYPE_STREAM:
+            # file stream download!!
+            if self.download.stream is None:
+                self.log.error("Data stream has not been set.")
+                raise web.internalerror("Execution errors")
+
+            return self.download.stream
+
+        else:
+            # Illegal Error.
+            self.log.error('Was specified assuming no output type. - type=%d' % self.download.type)
+            raise web.internalerror()
 
     def GET(self, *param, **params):
+        """GET Request
+        """
         try:
             self._pre(*param, **params)
             self.__method__ = 'GET'

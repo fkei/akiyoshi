@@ -10,11 +10,38 @@
     <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="/static/lib/bootstrap-1.2.0.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
-    <script type="text/javascript" src="static/lib/jquery-1.6.2.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="static/lib/jquery.tag.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery-1.6.2.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.tag.js" charset="utf-8"></script>
+
+    <script type="text/javascript" src="/static/lib/jquery.flot.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.flot.selection.min.js" charset="utf-8"></script>
+<!--
+    <script type="text/javascript" src="/static/lib/jquery.flot.crosshair.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.flot.fillbetween.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.flot.image.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.flot.navigate.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.flot.pie.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.flot.resize.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.flot.stack.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.flot.symbol.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.flot.threshold.min.js" charset="utf-8"></script>
+-->
+    <script type="text/javascript" src="/static/lib/binaryXHR.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/rrdFile.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/rrdFilter.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/rrdFlot.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/rrdFlotMatrix.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/rrdFlotSupport.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/rrdMultiFile.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/akiyoshi.rrd.cpu.js" charset="utf-8"></script>
   </head>
 <script type="text/javascript">
 <!--
+$(function(){
+    //getRrdCpu('graph', '0');
+    getRrdCpuMatrix('graph', '0');
+});
+
 // -->
 </script>
 <style type="text/css">
@@ -73,7 +100,8 @@
             <li><a href="#">MongoDB</a></li>
             <li><a href="#">MySQL</a></li>
           </ul>
-          <div style="margin-top: 57px">aaaaaaaaaaaaaaa</div>
+          <input type="text" id="vtext" value="" />
+          <div id="graph" style="margin-top: 57px">aaaaaaaaaaaaaaa</div>
         </div>
       </div>
     </div>
