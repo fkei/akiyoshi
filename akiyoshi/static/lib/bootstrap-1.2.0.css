@@ -1424,7 +1424,7 @@ a.menu:after, .dropdown-toggle:after {
   content: "";
 }
 .tabs:after, .pills:after {
-  clear: both;
+/**  clear: both; **/
 }
 .tabs > li, .pills > li {
   float: left;
