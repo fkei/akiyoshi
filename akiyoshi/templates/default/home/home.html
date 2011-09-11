@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="/static/lib/bootstrap-1.2.0.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
     <script type="text/javascript" src="/static/lib/jquery-1.6.2.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.tablesorter.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/lib/jquery.tag.js" charset="utf-8"></script>
 
     <script type="text/javascript" src="/static/lib/jquery.flot.min.js" charset="utf-8"></script>
@@ -33,13 +34,24 @@
     <script type="text/javascript" src="/static/lib/rrdFlotMatrix.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/lib/rrdFlotSupport.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/lib/rrdMultiFile.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/static/js/akiyoshi.rrd.cpu.js" charset="utf-8"></script>
+
+    <script type="text/javascript" src="/static/js/jquery.akiyoshi.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/akiyoshi.ajax.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/akiyoshi.rrd.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/akiyoshi.node.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/akiyoshi.sidebar.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/akiyoshi.content.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/akiyoshi.manager.js" charset="utf-8"></script>
+
+
   </head>
 <script type="text/javascript">
 <!--
 $(function(){
     //getRrdCpu('graph', '0');
-    getRrdCpuMatrix('graph', '0');
+    //getRrdCpuMatrix('graph', '0');
+    $.akiyoshi.sidebar.nodes("nodes");
+    $.akiyoshi.content.info("content");
 });
 
 // -->
@@ -79,20 +91,11 @@ $(function(){
 
     <div id="container" style="margin:54px 34px 12px 34px">
       <div class="container-fluid">
-        <div class="sidebar">
-          <blockquote>Web Server</blockquote>
-          <ul>
-            <li><a href="192.168.0.1">192.168.0.1</a></li>
-            <li><a href="192.168.0.1">192.168.0.1</a></li>
-            <li><a href="192.168.0.1">192.168.0.1</a></li>
-            <li><a href="192.168.0.1">192.168.0.1</a></li>
-            <li><a href="192.168.0.1">192.168.0.1</a></li>
-            <ul>
-              <li><a href="#">CPU</a></li>
-            </ul>
-          </ul>
+        <div id="sidebar" class="sidebar">
+          <div id="tags"></div>
+          <div id="nodes"></div>
         </div>
-        <div class="content">
+        <div id="content" class="content">
           <ul class="pills">
             <li class="active"><a href="#">CPU</a></li>
             <li><a href="#">Memory</a></li>
@@ -100,7 +103,6 @@ $(function(){
             <li><a href="#">MongoDB</a></li>
             <li><a href="#">MySQL</a></li>
           </ul>
-          <input type="text" id="vtext" value="" />
           <div id="graph" style="margin-top: 57px">aaaaaaaaaaaaaaa</div>
         </div>
       </div>

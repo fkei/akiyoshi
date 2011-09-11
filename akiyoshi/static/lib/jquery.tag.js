@@ -34,7 +34,7 @@
          * @param {String} name tag name
          * @param {JSON} options tag attribute
          */
-        tagadd : function(name, options) {
+        tag : function(name, options) {
             return this.pushStack(function() {
                 var part = '<'+name;
                 for (var key in options) {

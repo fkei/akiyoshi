@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 
 def load():
     ret = []
@@ -11,6 +12,7 @@ def load():
             mod = __import__('controller.' + name)
             method = getattr(mod, name)
             ret += method.urls
+            print >>sys.stdout, '[INFO] register conntroller. %s' % (name)
 
     return ret
 

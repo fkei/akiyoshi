@@ -51,6 +51,10 @@ def start():
         logging.config.fileConfig(akiyoshi.config["log"]["file"])
         akiyoshi.log = logging.getLogger('akiyoshi.default')
 
+        # external search path
+        for y in [x.strip() for x in akiyoshi.config["external"]["searchpath"].split(',') if x]:
+            if (y in sys.path) is False: sys.path.insert(0, y)
+
         # python search path
         sys.path.insert(0, akiyoshi.dirname)
 

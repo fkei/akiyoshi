@@ -10,10 +10,10 @@ import traceback
 # 3rd party
 import web
 from web.contrib.template import render_mako
-
 from mako.template import Template
 from mako.lookup import TemplateLookup
 from mako import exceptions
+import simplejson
 
 import akiyoshi
 
@@ -53,13 +53,19 @@ class Rest:
         if isinstance(f, web.HTTPError) is True:
             raise f
 
-
         if self.download.type == self.DOWNLOAD_TYPE_NORMAL:
             # nomal process
+            if self.__template__.media == "json":
+                try:
+                    _r = simplejson.dumps(self.view)
+                    return _r
+                except:
+                    raise web.internalerror()
+
             if f is True:
                 path = '%s/%s.%s' % (
-                    self.__template__.dir,
-                    self.__template__.file,
+                    self.__template__.dir.replace("controller", ""),
+                    self.__template__.file.replace("controller", ""),
                     self.__template__.media)
 
             try:

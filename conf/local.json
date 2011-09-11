@@ -1,12 +1,19 @@
 {
     "mode": "local",
+    "external": {
+        "searchpath": "/usr/local/Cellar/rrdtool/1.4.4/lib/python2.6/site-packages/"
+    },
+    "tmp": "/tmp",
     "log": {
         "file": "../conf/log.conf"
     },
     "database": {
         "type": "sqlite",
-        "bind": "sqlite:////tmp/akiyoshi.db",
+        "bind": "sqlite:///../db/akiyoshi.db",
         "pool_size": 10,
         "max_overflow": 10
+    },
+    "collectd": {
+        "basedir": "/var/lib/collectd"
     }
 }
