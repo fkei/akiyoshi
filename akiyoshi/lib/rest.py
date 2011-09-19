@@ -27,6 +27,7 @@ class Rest:
         self.download = web.Storage()
 
         self.view = web.Storage()
+        self.input = web.Storage()
 
         # download define
         self.DOWNLOAD_TYPE_NORMAL = 0
@@ -40,7 +41,12 @@ class Rest:
         self.download.once = False
 
     def _pre(self, *param, **params):
-        pass
+        multi = {}
+        for x in web.input(_unicode=False).keys():
+            if x.startswith('multi') is True:
+                multi[x] = {}
+        self.input = web.input(**multi)
+
 
     def _post(self, f):
         now = datetime.now()
@@ -239,6 +245,24 @@ class Rest:
         kwargs.update(view)
         return t.render(**kwargs)
 
+# -- Authenticate
+def auth(func):
+    try:
+        _mod = __import__("auth.%s" % akiyoshi.config["auth"]["type"])
+        mod = getattr(_mod, akiyoshi.config["auth"]["type"])
+        return mod.auth(func)
+    except:
+        print >>sys.stderr, "Authentication package failed to load. - %s" % akiyoshi.config["auth"]["type"]
+        return unauth(func)
+
+def unauth(func):
+    def wrapper(self, *args, **kwargs):
+        return web.unauthorized()
+
+    wrapper.__name__ = func.__name__
+    wrapper.__dict__ = func.__dict__
+    wrapper.__doc__ = func.__doc__
+    return wrapper
 
 # -- HTTP Status Code
 class Unauthorized(web.HTTPError):
@@ -246,11 +270,10 @@ class Unauthorized(web.HTTPError):
         if isinstance(data, list):
             data = "\n".join(data)
 
-        global BASIC_REALM
         status = "401 Unauthorized"
         headers = {
             'Content-Type': 'text/html; charset=utf-8',
-            'WWW-Authenticate': 'Basic realm="%s"' % BASIC_REALM
+            'WWW-Authenticate': 'Basic realm="%s"' % "AKIYOSHI_AUTHORIZE"
         }
         web.HTTPError.__init__(self, status, headers, data)
 

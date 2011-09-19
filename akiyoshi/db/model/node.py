@@ -44,7 +44,6 @@ class Node(Model):
         self.created_user = created_user
         self.modified_user = modified_user
         self.host = host
-        self.node = node
         self.notebook = notebook
         self.tags = tags
 

@@ -1,7 +1,7 @@
 {
     "mode": "local",
     "external": {
-        "searchpath": "/usr/local/Cellar/rrdtool/1.4.4/lib/python2.6/site-packages/"
+        "searchpath": "/usr/local/lib/python"
     },
     "tmp": "/tmp",
     "log": {
@@ -14,6 +14,13 @@
         "max_overflow": 10
     },
     "collectd": {
-        "basedir": "/var/lib/collectd"
+        "basedir": "/var/collectd"
+    },
+    "auth": {
+        "type": "basic"
+    },
+    "admin": {
+        "user" : "admin",
+        "password" : "admin"
     }
 }

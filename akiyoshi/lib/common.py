@@ -1,16 +1,22 @@
 import time
 import datetime
+import string
+import random
+import tempfile
+
+def mktmp():
+    return tempfile.mkstemp()
 
 def create_epochsec(year, month, day, hour, minute, second):
     """ epochsec
     """
-    print year
-    print month
-    print day
-    print hour
-    print minute
-    print second
-    
+    #print year
+    #print month
+    #print day
+    #print hour
+    #print minute
+    #print second
+
     return str(int(time.mktime(datetime.datetime(year, month, day, hour, minute, second).timetuple())))
 
 def now_epochsec():
@@ -39,7 +45,13 @@ def pastday_epochsec():
                                          yesterday.second)
     return now_epochsec, yesterday_epochsec
 
-    
+
+def generate_phrase(len, letters=None):
+    if letters is None:
+        letters = string.digits + string.letters + '-.'
+    random.seed()
+    return ''.join(random.choice(letters) for i in xrange(len))
+
 if __name__ == '__main__':
     print now_epochsec()
     print pastday_epochsec()

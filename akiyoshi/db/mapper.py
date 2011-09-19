@@ -18,11 +18,11 @@ def reload_mappers(metadata):
     # NoteBook Table mapping!!
     model.notebook.reload_mapper(metadata, now)
 
-    # Tag Table mapping!!
-    model.tag.reload_mapper(metadata, now)
-
     # Node2Tag Table mapping!!
     model.node2tag.reload_mapper(metadata, now)
+
+    # Tag Table mapping!!
+    model.tag.reload_mapper(metadata, now)
 
     # Node Table mapping!!
     model.node.reload_mapper(metadata, now)

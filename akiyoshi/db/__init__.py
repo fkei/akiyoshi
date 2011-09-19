@@ -62,7 +62,7 @@ def get_metadata():
     if __metadata is None:
         __metadata = MetaData(__engine)
         mapper.reload_mappers(__metadata)
-    
+
     # TODO develop
     #import pdb; pdb.set_trace()
     #__metadata.create_all()

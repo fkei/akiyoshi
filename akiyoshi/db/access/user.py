@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 class UserAccess:
@@ -8,15 +9,15 @@ class UserAccess:
         return session.query(User).filter(User.email == email).first()
 
     def save(self, session, user):
-        session.save(user)
+        return session.save(user)
 
     def update(self, session, user):
-            session.update(user)
+        return session.update(user)
 
     def delete(self, session, user):
-        session.delete(user)
+        return session.delete(user)
 
     def merge(self, session, user):
-        session.merge(user)
+        return session.merge(user)
 
 userAccess = UserAccess()

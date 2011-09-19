@@ -8,25 +8,36 @@
     <meta http-equiv="Cache-Control" content="no-cache" />
     <title>Akiyoshi</title>
     <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" type="text/css" href="/static/lib/bootstrap-1.2.0.css" />
+    <link rel="stylesheet" type="text/css" href="/static/lib/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+<!-- jquery -->
     <script type="text/javascript" src="/static/lib/jquery-1.6.2.min.js" charset="utf-8"></script>
+<!-- jquery plugin -->
     <script type="text/javascript" src="/static/lib/jquery.tablesorter.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/lib/jquery.tag.js" charset="utf-8"></script>
-
+<!-- twitter bootstrap -->
+    <script type="text/javascript" src="/static/lib/bootstrap-twipsy.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/bootstrap-alerts.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/bootstrap-dropdown.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/bootstrap-modal.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/bootstrap-popover.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/bootstrap-scrollspy.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/bootstrap-tabs.js" charset="utf-8"></script>
+<!-- jquery.flot -->
     <script type="text/javascript" src="/static/lib/jquery.flot.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/lib/jquery.flot.selection.min.js" charset="utf-8"></script>
-<!--
+    <script type="text/javascript" src="/static/lib/jquery.flot.pie.min.js" charset="utf-8"></script>
+<!-- not use
     <script type="text/javascript" src="/static/lib/jquery.flot.crosshair.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/lib/jquery.flot.fillbetween.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/lib/jquery.flot.image.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/lib/jquery.flot.navigate.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/static/lib/jquery.flot.pie.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/lib/jquery.flot.resize.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/lib/jquery.flot.stack.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/lib/jquery.flot.symbol.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/lib/jquery.flot.threshold.min.js" charset="utf-8"></script>
 -->
+<!-- rrd graph -->
     <script type="text/javascript" src="/static/lib/binaryXHR.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/lib/rrdFile.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/lib/rrdFilter.js" charset="utf-8"></script>
@@ -39,19 +50,23 @@
     <script type="text/javascript" src="/static/js/akiyoshi.ajax.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/js/akiyoshi.rrd.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/js/akiyoshi.node.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/akiyoshi.group.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/js/akiyoshi.sidebar.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/akiyoshi.action.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/js/akiyoshi.content.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/static/js/akiyoshi.manager.js" charset="utf-8"></script>
 
 
   </head>
 <script type="text/javascript">
 <!--
 $(function(){
+  // header
+  $("#setting").dropdown();
     //getRrdCpu('graph', '0');
     //getRrdCpuMatrix('graph', '0');
     $.akiyoshi.sidebar.nodes("nodes");
-    $.akiyoshi.content.info("content");
+    $.akiyoshi.sidebar.group("group", "server");
+    $.akiyoshi.content.info("main");
 });
 
 // -->
@@ -67,19 +82,24 @@ $(function(){
         <div class="topbar">
           <div class="topbar-inner">
             <div class="container">
-              <h3><a href="#">Akiyoshi Project</a></h3>
+              <h3><a href="/">Akiyoshi Project</a></h3>
               <ul class="nav">
                 <li class="active"><a href="/">Home</a></li>
                 <li><a href="#">Monitoring</a></li>
                 <li><a href="#">Detection</a></li>
               </ul>
-              <ul class="nav secondary-nav">
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle">Setting</a>
-                  <ul class="dropdown-menu">
+              <ul id="setting" class="nav secondary-nav">
+                <li class="menu">
+                  <a href="#" class="menu">Setting</a>
+                  <ul class="menu-dropdown">
                     <li><a href="#">Account</a></li>
+                    <li><a href="/logout">Logout</a></li>
                     <li class="divider"></li>
-                    <li><a href="#">Logout</a></li>
+                    <li>
+                      <a data-controls-modal="about-modal" data-backdrop="true" data-keyboard="true" class="link" href="#">
+                        About
+                      </a>
+                    </li>
                   </ul>
                 </li>
               </ul>
@@ -92,25 +112,55 @@ $(function(){
     <div id="container" style="margin:54px 34px 12px 34px">
       <div class="container-fluid">
         <div id="sidebar" class="sidebar">
-          <div id="tags"></div>
+          <div id="group"></div>
           <div id="nodes"></div>
         </div>
         <div id="content" class="content">
-          <ul class="pills">
-            <li class="active"><a href="#">CPU</a></li>
-            <li><a href="#">Memory</a></li>
-            <li><a href="#">Disk</a></li>
-            <li><a href="#">MongoDB</a></li>
-            <li><a href="#">MySQL</a></li>
-          </ul>
-          <div id="graph" style="margin-top: 57px">aaaaaaaaaaaaaaa</div>
+          <div id="action">
+            <ul class="breadcrumb">
+              <li><a href="/">Home</a><span class="divider">/</span></li>
+              <li class="active">You are here</li>
+            </ul>
+          </div>
+
+          <div id="alert"></div>
+
+          <div id="main"></div>
+
         </div>
       </div>
     </div>
-    <div id="footer">
-      <p>
-        <a href="https://github.com/fkei/akiyoshi">Akiyoshi Project</a> © 2011 - Japan
-      </p>
+  </div>
+
+<!-- modal -->
+  <div id="modal" class="modal hide fade" style="display: none;"></div>
+
+  <div id="about-modal" class="modal hide fade" style="display: none;">
+    <div class="modal-header">
+      <a href="#" class="close">×</a>
+      <h3>About akiyoshi project</h3>
+    </div>
+    <div class="modal-body">
+      <a href="https://github.com/fkei/akiyoshi">Akiyoshi Project</a> © 2011 - Japa
+      <h3>Using open source</h3>
+      <ul>
+        <li>rrdtool</li>
+        <li>collectd</li>
+        <li>python >= 2.4</li>
+        <li>SQLAlchemy</li>
+        <li>Mako</li>
+        <li>web.py</li>
+        <li>jquery</li>
+        <li>jquery.flot.js</li>
+        <li>javascriptrrd</li>
+      </ul>
+      <h3>Open source has been helpful</h3>
+      <ul>
+        <li>karesansui project</li>
+      <ul>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn close small">Close</a>
     </div>
   </div>
 </body>

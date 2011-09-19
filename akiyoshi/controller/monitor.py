@@ -1,11 +1,12 @@
 import web
-from lib.rest import Rest
+from lib.rest import Rest, auth
 
 import akiyoshi
 from service.monitor import monitorService
 
 class Monitor(Rest):
 
+    @auth
     def _GET(self, *param, **params):
 
         basedir = akiyoshi.config.collectd["basedir"]
@@ -14,11 +15,15 @@ class Monitor(Rest):
         name = None
 
         if 1 == len(param):
-            # /host/*
+            # /(host|category)/*
             host = param[0]
         else:
             return web.notfound() # TODO
 
+        # tag(category)
+        
+
+        # host
         directory = "%s/%s" % (basedir, host)
         monitors = monitorService.list(directory, False)
         self.view = {}

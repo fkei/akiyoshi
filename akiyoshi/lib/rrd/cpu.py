@@ -5,9 +5,9 @@ import os
 import rrdtool
 
 from lib.const import rrd
+from lib.common import generate_phrase
 
-def make(read_dir, write_dir, start, end, size="small"):
-    size = "large"
+def make(read_dir, write_dir, category, start, end, size="small"):
     if size:
         options = rrd[size]
     else:
@@ -18,32 +18,27 @@ def make(read_dir, write_dir, start, end, size="small"):
     if os.path.isfile("/tmp/hoge.png") is False:
         print "write_dir error" # TODO
 
-    print read_dir
-    print write_dir
-    print start
-    print end
-    print size
-    steal = "DEF:steal=%s/cpu-steal.rrd:value:AVERAGE" % read_dir
+    write_file_path = "%s/%s.png" % (write_dir, generate_phrase(12))
 
-    import pdb; pdb.set_trace()
-
-    param = ("/tmp/hoge.png",
+    rrdtool.graph(write_file_path,
         "--font", options["font"],
-        "--title", "CPU",
+        "--title", str(category),
         "--vertical-label", "jiffies",
         "--upper-limit", "100",
         "--rigid",
+        "--width", options["width"],
+        "--height", options["height"],
         "--start", start,
         "--end",   end,
         "--legend-direction", "bottomup",
-        "DEF:idle=%s/cpu-idle.rrd:value:AVERAGE" % read_dir,
-        "DEF:interrupt=%s/cpu-interrupt.rrd:value:AVERAGE" % read_dir,
-        "DEF:nice=%s/cpu-nice.rrd:value:AVERAGE" % read_dir,
-        "DEF:user=%s/cpu-user.rrd:value:AVERAGE" % read_dir,
-        "DEF:wait=%s/cpu-wait.rrd:value:AVERAGE" % read_dir,
-        "DEF:system=%s/cpu-system.rrd:value:AVERAGE" % read_dir,
-        "DEF:softirq=%s/cpu-softirq.rrd:value:AVERAGE" % read_dir,
-        "DEF:steal=%s/cpu-steal.rrd:value:AVERAGE" % read_dir,
+        "DEF:idle=%s/cpu-idle.rrd:value:AVERAGE" % str(read_dir),
+        "DEF:interrupt=%s/cpu-interrupt.rrd:value:AVERAGE" % str(read_dir),
+        "DEF:nice=%s/cpu-nice.rrd:value:AVERAGE" % str(read_dir),
+        "DEF:user=%s/cpu-user.rrd:value:AVERAGE" % str(read_dir),
+        "DEF:wait=%s/cpu-wait.rrd:value:AVERAGE" % str(read_dir),
+        "DEF:system=%s/cpu-system.rrd:value:AVERAGE" % str(read_dir),
+        "DEF:softirq=%s/cpu-softirq.rrd:value:AVERAGE" % str(read_dir),
+        "DEF:steal=%s/cpu-steal.rrd:value:AVERAGE" % str(read_dir),
         "AREA:steal#000000:Steal    ",
         "GPRINT:steal:MIN:%8.2lf",
         "GPRINT:steal:MAX:%8.2lf",
@@ -87,10 +82,7 @@ def make(read_dir, write_dir, start, end, size="small"):
         "COMMENT:%s" % options["comment"],
         "COMMENT: \\n"
     )
-
-    import pdb; pdb.set_trace()
-
-    data = rrdtool.graph(*param)
+    return write_file_path
 
 if __name__ == '__main__':
     _start_year = 2011

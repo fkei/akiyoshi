@@ -20,7 +20,7 @@ class UserService:
             return None
 
     def getUser(self, session, email):
-        return userAccess.findByemail(session, email)
+        return userAccess.findbyemail(session, email)
 
     def merge(self, session, email, plain, nickname):
         (password, salt) = sha1encrypt(plain)

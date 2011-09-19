@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-import exceptions
+import lib.exceptions
 
 __version__ = "0.1.0"
 __release__ = "1"
