@@ -120,9 +120,28 @@ $(function(){
           <div id="nodes"></div>
         </div>
         <div id="content" class="content">
+          <div id="action">
+            <ul class="breadcrumb">
+              <li><a href="/">Home</a><span class="divider">/</span></li>
+              <li class="active">You are here</li>
+            </ul>
+          </div>
+
+          <div id="alert"></div>
+
+          <div id="main"></div>
+
+          <!-- flot start -->
           <div id="flot", class="flot">
-            <div id="placeholder"  style="width:500px;height:300px">
+            <!-- graph -->
+            <div style="float:left;"><div id="placeholder"  style="width:600px;height:300px"></div></div>
+            <!-- miniture-->
+            <div id="miniature" style="float:left;margin-left:20px">aaaa
+              <div id="overview" style="width:166px;height:100px"></div>
+              <p id="overviewLegend" style="margin-left:10px;"></p>
             </div>
+            <div class="clear"></div>
+
             <div id="choices"></div>
             <div class="clearfix" id="clickdata">
               <label for="prependedInput2">Show mouse position</label>
@@ -146,18 +165,11 @@ $(function(){
                 </ul>
               </div>
             </div>
-
           </div>
-          <div id="action">
-            <ul class="breadcrumb">
-              <li><a href="/">Home</a><span class="divider">/</span></li>
-              <li class="active">You are here</li>
-            </ul>
-          </div>
+          <!-- flot end -->
 
-          <div id="alert"></div>
 
-          <div id="main"></div>
+
 
         </div>
       </div>
