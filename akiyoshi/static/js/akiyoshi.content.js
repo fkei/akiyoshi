@@ -43,7 +43,7 @@ $.akiyoshi.addHandler("content", new function() {
                                     $(this)
                                     .tag("span", {class: "label cursor"}).click(function() {
                                         var host = $(this).closest('tr').children("td:eq(1)")[0].firstChild.data;
-                                        $.akiyoshi.content.graph(host);
+                                        $.akiyoshi.content.__graphPills(host);
                                     }).text("Graph").gat();
 
                                     if (data[i].control === false) {
@@ -52,7 +52,9 @@ $.akiyoshi.addHandler("content", new function() {
                                         .tag("span", {class: "label cursor", "data-controls-modal": "modal", "data-backdrop": true, "data-keyboard": true}).text("Add")
                                         .click(function() {
                                             var host = $(this).closest('tr').children("td:eq(1)")[0].firstChild.data;
-                                            $.akiyoshi.node.postModal(host);
+                                            $.akiyoshi.node.postModal(host, function(err, result) {
+                                                $.akiyoshi.content.info(id, category); // content reload
+                                            });
                                         })
                                         .gat()
                                         ;
@@ -69,31 +71,55 @@ $.akiyoshi.addHandler("content", new function() {
                 .tag("div", {id:"pie"}).gat()
             .gat()
             ;
-            var data = [
-                { label: "Series1",  data: 10},
-                { label: "Series2",  data: 30},
-                { label: "Series3",  data: 90},
-                { label: "Series4",  data: 70},
-                { label: "Series5",  data: 80},
-                { label: "Series6",  data: 110}
-            ];
-            var options = {
-                series: {
-                    pie: {
-                        show: true,
-                    }
-                }
-            };
-            
-            //$.plot($("#pie"), data, options);
-            
             if (0 < data.length) {
                 $("table#servers-table").tablesorter({sortList: [[1,0]]});
             };
 		});
 	};
 
-    this.graph = function(host) {
+    this.__graphLins = function(id, link, extension, callback) {
+        var fn = function(err, result) {
+            $("#"+id).empty().next(function() {
+                for (var i = 0; i < result.length; i++) {
+                    var data = result[i];
+                    for (var j = 0; j < data.links.length; j++) {
+                        $(this)
+                        .tag("h4").text(data.name)
+                            .tag("span", {style:"margin-left: 5px;", class: "label cursor"}).text("Analysis").gat()
+                            .tag("span", {style:"margin-left: 5px;", class: "label cursor"}).text("Image").gat()
+                        .gat()
+                        .tag("ul", {"class": "media-grid"})
+                            .tag("li")
+                                .tag("a", {})
+                                    .tag("img", {"class": "thumbnail", src: data.links[j] + extension}).gat()
+                                .gat()
+                            .gat()
+                        .gat()
+                        ;
+                    }
+                }
+            });
+
+            if (callback) {
+                callback(err, result);
+            }
+        };
+
+        $.akiyoshi.ajax.async({
+            type: "GET",
+            url: link
+        })
+        .success(function(result) {
+            fn(null, result);
+        })
+        .error(function(jqXHR, textStatus, errorThrown) {
+			fn(textStatus);
+		})
+        .end()
+		;
+    };
+    
+    this.graphPills = function(host) {
         $.akiyoshi.ajax.async({
             type: "GET",
             url: "/monitor/" + host
@@ -106,7 +132,9 @@ $.akiyoshi.addHandler("content", new function() {
                     var nodes = data.nodes;
                     for (var i = 0; i < all.length; i++) {
                         $(this).tag("li")
-                            .tag("a", {href: "#graph", id: "/graph/" + host + "/" + all[i]}).text(all[i]).click(function() {
+                            .tag("a", {id: "/graph/" + host + "/" + all[i]}).text(all[i]).click(function() {
+                                $.akiyoshi.content.__graphLins("graph", $(this).attr("id"), ".png", function(){});
+                                /**
                                 $("#graph")
                                     .tagset("ul", {class: "media-grid"})
                                         .tag("li")
@@ -115,6 +143,7 @@ $.akiyoshi.addHandler("content", new function() {
                                             .gat()
                                         .gat()
                                     .gat();
+                                **/
                             }).gat()
                         .gat()
                         ;

@@ -8,11 +8,8 @@ class UserAccess:
     def findby1email(self, session, email):
         return session.query(User).filter(User.email == email).first()
 
-    def save(self, session, user):
-        return session.save(user)
-
-    def update(self, session, user):
-        return session.update(user)
+    def add(self, session, user):
+        return session.ad(user)
 
     def delete(self, session, user):
         return session.delete(user)

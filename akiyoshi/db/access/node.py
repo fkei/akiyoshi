@@ -9,11 +9,8 @@ class NodeAccess:
     def findbyhost(self, session, host):
         return session.query(Node).filter(Node.host == host).first()
 
-    def save(self, session, node):
-        return session.save(node)
-
-    def update(self, session, node):
-        return session.update(node)
+    def add(self, session, node):
+        return session.add(node)
 
     def delete(self, session, node):
         return session.delete(node)

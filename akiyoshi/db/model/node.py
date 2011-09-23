@@ -19,7 +19,6 @@ def get_node(metadata, now):
                                               sqlalchemy.ForeignKey('notebook.id'),
                                               ),
                             sqlalchemy.Column('host', sqlalchemy.String(256),
-                                              nullable=True,
                                               unique=True,
                                               ),
                             sqlalchemy.Column('created_user_id', sqlalchemy.Integer,
@@ -50,10 +49,10 @@ class Node(Model):
     def json(self):
         ret = {}
         ret["id"] = self.id
-        ret["notebook"] = self.notebook()
+        ret["notebook"] = self.notebook.value
         ret["host"] = self.host
-        ret["created_user"] = self.created_user
-        ret["modified_user"] = self.modified_user
+        ret["created_user"] = self.created_user.nickname
+        ret["modified_user"] = self.modified_user.nickname
         ret["tags"] = []
         if self.tags:
             for x in self.tags:

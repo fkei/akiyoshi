@@ -7,11 +7,8 @@ class NotebookAccess:
     def findby1(self, session, id):
         return session.query(Notebook).filter(Notebook.id == id).first()
 
-    def save(self, session, notebook):
-        return session.save(notebook)
-
-    def update(self, session, notebook):
-        return session.update(notebook)
+    def add(self, session, notebook):
+        return session.add(notebook)
 
     def delete(self, session, notebook):
         return session.delete(notebook)

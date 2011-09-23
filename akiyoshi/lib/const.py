@@ -1,15 +1,15 @@
 
 rrd = {
     "small": {
-        "font": "DEFAULT:6:",
-        "width": "220",
+        "font": "DEFAULT:5:",
+        "width": "200",
         "height": "100",
         "comment": "color             min        max       avg        cur\\n",
         },
     "normal": {
-        "font": "DEFAULT:10:",
-        "width": "500",
-        "height": "200",
+        "font": "DEFAULT:7:",
+        "width": "600",
+        "height": "400",
         "comment": "color             min        max       avg        cur\\n",
         },
     "large": {

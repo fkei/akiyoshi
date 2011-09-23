@@ -34,6 +34,7 @@ def main():
 
     # start
     try:
+        akiyoshi.log.info("akiyoshi web server start.")
         app.run()
     except Exception, e:
         akiyoshi.log.critical(traceback.format_exc())

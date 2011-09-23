@@ -55,7 +55,10 @@ class NodeController(Rest):
         category = self.input.category
         tags = self.input.tags
 
-        node = nodeService.save(web.ctx.orm, self.me, host, notebook, category, tags)
+        node = nodeService.add(web.ctx.orm, self.me, host, notebook, category, tags)
+
+        self.__template__.media = "json"
+        self.view = None
 
         return True
 

@@ -48,7 +48,11 @@ def start():
         akiyoshi.config = akiyoshi.Storage(load(akiyoshi.options.config))
 
         # logging
+        if os.path.isfile(akiyoshi.config["log"]["file"]) is False:
+            print >>sys.stderr, 'logging file not found. %s' % akiyoshi.config["log"]["file"]
+
         logging.config.fileConfig(akiyoshi.config["log"]["file"])
+        print >>sys.stdout, 'logging file loading. %s' % akiyoshi.config["log"]["file"]
         akiyoshi.log = logging.getLogger('akiyoshi.default')
 
         # external search path

@@ -3,7 +3,10 @@ from lib.rest import Rest, auth
 
 import akiyoshi
 from service.graph import graphService
-from lib.common import now_epochsec, pastday_epochsec
+from service.rrd import rrdService
+from service.node import nodeService
+
+from lib.common import now_epochsec, past1_epochsec
 
 class Graph(Rest):
 
@@ -12,21 +15,66 @@ class Graph(Rest):
         basedir = akiyoshi.config.collectd["basedir"]
 
         if 3 == len(param):
-            # image
-            (end, start) = pastday_epochsec()
-            size = "normal"
-            output = graphService.make(akiyoshi.config.tmp,
-                                       basedir,
-                                       param[0],
-                                       param[1],
-                                       start,
-                                       end,
-                                       size)
-            self.download.file = output
-            self.download.type = self.DOWNLOAD_TYPE_FILE
-            self.download.once = True
+            if param[2] == "png":
+                # image
+                (start, end) = past1_epochsec()
+                size = "normal"
+                output = rrdService.make(akiyoshi.config.tmp,
+                                           basedir,
+                                           param[0],
+                                           param[1],
+                                           start,
+                                           end,
+                                           size)
+                self.download.file = output
+                self.download.type = self.DOWNLOAD_TYPE_FILE
+                self.download.once = True
+            elif param[2] == "dat":
+                targetdir = "%s/%s/%s" % (basedir, param[0], param[1])
+                rrdfiles = nodeService.fsnodes(targetdir)
+                fullRrdFiles = []
+                for rrdfile in rrdfiles:
+                    fullRrdFiles.append(str("%s/%s/%s/%s" % (basedir, param[0], param[1], rrdfile)))
+
+                if self.input.has_key("type"):
+                    type = self.input.type
+                else:
+                    type = "AVERAGE"
+
+
+                if self.input.has_key("resolution"):
+                    resolution = self.input.resolution
+                else:
+                    resolution = "300"
+
+                if self.input.has_key("interval"):
+                    interval = self.input.interval
+                else:
+                    interval = "1day"
+
+                data = rrdService.fetch(fullRrdFiles, type, resolution, interval)
+
+                self.__template__.media = "json"
+                self.view = data
+
+                return True
+
+            else:
+                return web.notfound() # TODO
         else:
             # Unsure
             return web.notfound() # TODO
 
-urls = (r"/graph/([a-zA-Z0-9-_.]+)/([a-zA-Z0-9-_.]+)(\.png)$", Graph)
+class GraphGroup(Rest):
+
+    @auth
+    def _GET(self, *param, **params):
+        basedir = akiyoshi.config.collectd["basedir"]
+
+        data = graphService.getGraphLinks(web.ctx.orm, basedir,param[0], param[1])
+        self.__template__.media = "json"
+        self.view = data
+        return True
+
+urls = (r"/graph/([a-zA-Z0-9-_.]+)/([a-zA-Z0-9-_.]+)\.(dat|png)$", Graph,
+        r"/graph/([a-zA-Z0-9-_.]+)/([a-zA-Z0-9-_.]+)/?", GraphGroup)

@@ -23,7 +23,6 @@ $.akiyoshi.addHandler("node", new function() {
             dataType: "html"
         })
 		.success(function(data) {
-            debugger;
 			callback(null, data);
 		})
 		.error(function(jqXHR, textStatus, errorThrown) {
@@ -75,18 +74,21 @@ $.akiyoshi.addHandler("node", new function() {
         .gat()
         .tag("div", {class: "modal-footer"})
             .tag("button", {class: "btn primary small"}).text("Save").click(function() {
-                $.akiyoshi.node.save("postModalForm", function() {
-
-                    //$("#modal").modal('hide'); // modal hide.
+                $.akiyoshi.node.save("postModalForm", function(err, result) {
+                    if (err) {
+                        
+                    } else {
+                        $("#modal").modal('hide'); // modal hide.
+                        if (callback) {
+                            callback(null);
+                        }
+                    }
                 });
                 
             }).gat()
             .tag("button", {class: "btn close small", style: "margin: 0px;"}).text("Cancel").gat()
         .gat()
         ;
-        if (callback) {
-            callback();
-        }
     };
 
 	this.list = function(id, callback) {

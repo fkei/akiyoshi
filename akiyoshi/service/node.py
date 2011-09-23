@@ -36,7 +36,7 @@ class NodeService:
 
         return (controlNodes, fsNodes)
 
-    def save(self, orm, me, host, notebook, categorys, tags):
+    def add(self, orm, me, host, note, categorys, tags):
         # tags -> listdir
         _tags = []
         for y in [x.strip() for x in tags.split(',') if x]:
@@ -52,8 +52,8 @@ class NodeService:
                 else:
                     otags.append(tagAccess.findby1name(orm, x)) # reuse
 
-        notebook = NoteBook(notebook)
+        notebook = NoteBook(note)
         node = Node(me, me, host, notebook, otags)
-        return nodeAccess.merge(orm, node)
+        return nodeAccess.add(orm, node)
 
 nodeService = NodeService()

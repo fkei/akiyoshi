@@ -20,11 +20,8 @@ class TagAccess:
     def findbyCategory(self, session, category):
         return session.query(Tag).filter(Tag.category == category).all()
 
-    def save(self, session, tag):
-        return session.save(tag)
-
-    def update(self, session, tag):
-        return session.update(tag)
+    def add(self, session, tag):
+        return session.add(tag)
 
     def delete(self, session, tag):
         return session.delete(tag)
