@@ -12,7 +12,7 @@ class Graph(Rest):
         basedir = akiyoshi.config.collectd["basedir"]
 
         if 3 == len(param):
-            # rrd graph
+            # image
             (end, start) = pastday_epochsec()
             size = "normal"
             output = graphService.make(akiyoshi.config.tmp,

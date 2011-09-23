@@ -3,12 +3,11 @@
   height: 0;
   overflow: hidden;
 }
-.graph {
-/**
-    margin: 43px 43px 43px 43px;
-**/
+.flot table {
+  width:auto;
 }
-
+.flot label {
+}
 .cursor {
   cursor: pointer;
 }

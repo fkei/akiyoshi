@@ -10,8 +10,7 @@ $.akiyoshi.addHandler("action", new function() {
                     } else {
                         $(this)
                         .tag("a", {link:data.link}).text(data.name).click(function() {
-                            
-                            
+                            // TODO
                         })
                         .tag("span", {class: "divider"}).text("/").gat()
                         .gat();

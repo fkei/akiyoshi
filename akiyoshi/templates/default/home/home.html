@@ -24,19 +24,20 @@
     <script type="text/javascript" src="/static/lib/bootstrap-scrollspy.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/lib/bootstrap-tabs.js" charset="utf-8"></script>
 <!-- jquery.flot -->
-    <script type="text/javascript" src="/static/lib/jquery.flot.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/static/lib/jquery.flot.selection.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/static/lib/jquery.flot.pie.min.js" charset="utf-8"></script>
-<!-- not use
-    <script type="text/javascript" src="/static/lib/jquery.flot.crosshair.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/static/lib/jquery.flot.fillbetween.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/static/lib/jquery.flot.image.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/static/lib/jquery.flot.navigate.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/static/lib/jquery.flot.resize.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/static/lib/jquery.flot.stack.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/static/lib/jquery.flot.symbol.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/static/lib/jquery.flot.threshold.min.js" charset="utf-8"></script>
--->
+    <!--[if lte IE 8]><script type="text/javascript" src="/static/lib/excanvas.min.js" charset="utf-8"></script><![endif]-->
+    <script type="text/javascript" src="/static/lib/jquery.flot.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.colorhelpers.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.flot.categories.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.flot.crosshair.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.flot.fillbetween.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.flot.image.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.flot.navigate.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.flot.pie.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.flot.resize.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.flot.selection.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.flot.stack.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.flot.symbol.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/lib/jquery.flot.threshold.js" charset="utf-8"></script>
 <!-- rrd graph -->
     <script type="text/javascript" src="/static/lib/binaryXHR.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/lib/rrdFile.js" charset="utf-8"></script>
@@ -48,12 +49,14 @@
 
     <script type="text/javascript" src="/static/js/jquery.akiyoshi.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/js/akiyoshi.ajax.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/akiyoshi.bootstrap.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/js/akiyoshi.rrd.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/js/akiyoshi.node.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/js/akiyoshi.group.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/js/akiyoshi.sidebar.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/js/akiyoshi.action.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/js/akiyoshi.content.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/akiyoshi.test.js" charset="utf-8"></script>
 
 
   </head>
@@ -67,6 +70,7 @@ $(function(){
     $.akiyoshi.sidebar.nodes("nodes");
     $.akiyoshi.sidebar.group("group", "server");
     $.akiyoshi.content.info("main");
+    $.akiyoshi.test.flot("flot");
 });
 
 // -->
@@ -116,6 +120,34 @@ $(function(){
           <div id="nodes"></div>
         </div>
         <div id="content" class="content">
+          <div id="flot", class="flot">
+            <div id="placeholder"  style="width:500px;height:300px">
+            </div>
+            <div id="choices"></div>
+            <div class="clearfix" id="clickdata">
+              <label for="prependedInput2">Show mouse position</label>
+              <div class="input">
+                <div class="input-prepend">
+                  <label class="add-on"><input type="checkbox" name="enablePosition" id="enablePosition"></label>
+                  <input style="font-weight:bold" class="medium" id="hoverdata" name="hoverdata" size="32" type="text" disabled="disabled">
+                </div>
+              </div>
+            </div>
+
+            <div class="clearfix">
+              <label id="optionsCheckboxes">Enable tooltip</label>
+              <div class="input">
+                <ul class="inputs-list">
+                  <li>
+                    <label>
+                      <input type="checkbox" name="enableTooltip" id="enableTooltip">
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
           <div id="action">
             <ul class="breadcrumb">
               <li><a href="/">Home</a><span class="divider">/</span></li>

@@ -8,26 +8,33 @@ class Monitor(Rest):
 
     @auth
     def _GET(self, *param, **params):
-
+        self.__template__.media = "json"
         basedir = akiyoshi.config.collectd["basedir"]
-        host = None
         category = None
-        name = None
-
         if 1 == len(param):
             # /(host|category)/*
-            host = param[0]
+            category = param[0]
         else:
             return web.notfound() # TODO
 
         # tag(category)
-        
+        monitors = monitorService.controlList(web.ctx.orm, basedir, category, True)
+        if monitors["node"]:
+            self.view = monitors
+            self.view["type"] = "tag"
+            return True
 
         # host
-        directory = "%s/%s" % (basedir, host)
-        monitors = monitorService.list(directory, False)
-        self.view = {}
+        directory = "%s/%s" % (basedir, category)
+        monitors = monitorService.list(web.ctx.orm, basedir, category, True)
+        self.view["type"] = "host"
+        self.view = monitors
+        
+        return True
 
+
+
+        """
         self.__template__.media = "json"
         for monitor in monitors:
             self.view[monitor] = {}
@@ -44,5 +51,6 @@ class Monitor(Rest):
 
 
         return True
+        """
 
-urls = (r"/monitor/([a-zA-Z0-9-_.]+)/?", Monitor)
+urls = (r"/monitor/([a-zA-Z0-9-_. ]+)/?", Monitor)

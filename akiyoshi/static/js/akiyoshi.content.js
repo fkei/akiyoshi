@@ -20,17 +20,22 @@ $.akiyoshi.addHandler("content", new function() {
                 .gat()
                 .tag("tbody")
                     .next(function() {
-                        for (var i = 0; i < data.length; i++) {
-                            var popup = data[i].notebook || "";
-                            popup += "\n\n";
-                            for (var j=0; j < data[i].tags.length; j++) {
-                                popup += "&nbsp" + data[i].tags[j] + ",&nbsp;";
+                        var popup = function(data) {
+                            var ret = "<b>Tag</b><br />";
+                            for (var j=0; j < data.tags.length; j++) {
+                                ret += "&nbsp" + data.tags[j] + "&nbsp;";
                             }
+                            ret += "<br /><br /><b>NoteBook</b><br />";
+                            ret += "<pre>" + data.notebook || "" + "</pre>";
+                            return ret;
+                        };
+                        
+                        for (var i = 0; i < data.length; i++) {
                             $(this)
                             .tag("tr")
                                 .tag("td").text(i).gat()
-                                .tag("td", {class:"host"}).text(data[i].name).mouseover(function(){
-                                    // TODO $(this).popover({title:"Infomation",content: content})
+                                .tag("td", {class:"host", style: "color: #00438A;"}).text(data[i].name).next(function(){
+                                    $.akiyoshi.bootstrap.popovers($(this), "Infomation", popup(data[i]), {html: true});
                                 })
                                 .gat()
                                 .tag("td").text(data[i].control ? "Managed" : "Unmanaged").gat()
@@ -97,9 +102,11 @@ $.akiyoshi.addHandler("content", new function() {
             $("#main")
                 .tagset("div", {class: "pills"})
                 .next(function() {
-                    for (var key in data) {
+                    var all = data.all;
+                    var nodes = data.nodes;
+                    for (var i = 0; i < all.length; i++) {
                         $(this).tag("li")
-                            .tag("a", {href: "#graph", id: data[key].url}).text(key).click(function() {
+                            .tag("a", {href: "#graph", id: "/graph/" + host + "/" + all[i]}).text(all[i]).click(function() {
                                 $("#graph")
                                     .tagset("ul", {class: "media-grid"})
                                         .tag("li")
@@ -109,8 +116,14 @@ $.akiyoshi.addHandler("content", new function() {
                                         .gat()
                                     .gat();
                             }).gat()
-                            .gat();
-                    }
+                        .gat()
+                        ;
+                    };
+                    // Action
+                    $.akiyoshi.action.update([
+                        {name: "Home", link: "/"},
+                        {name: "Graph - " + host}
+                    ]);
                 })
                 .gat()
                 .tag("div", {class: "clear"}).gat()
