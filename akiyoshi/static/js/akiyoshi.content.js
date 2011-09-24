@@ -84,20 +84,33 @@ $.akiyoshi.addHandler("content", new function() {
                     var data = result[i];
                     for (var j = 0; j < data.links.length; j++) {
                         $(this)
-                        .tag("h4").text(data.name)
-                            .tag("span", {style:"margin-left: 5px;", class: "label cursor"}).text("Analysis").gat()
-                            .tag("span", {style:"margin-left: 5px;", class: "label cursor"}).text("Image").gat()
-                        .gat()
-                        .tag("ul", {"class": "media-grid"})
-                            .tag("li")
-                                .tag("a", {})
-                                    .tag("img", {"class": "thumbnail", src: data.links[j] + extension}).gat()
+                        .tag("div", {id: data.links[j]})
+                            .tag("h4").text(data.name)
+                                .tag("span", {style:"margin-left: 5px;", class: "label cursor"}).text("Flot").click(function() {
+                                    // /graph/s1.fkei.info/cpu-0.dat
+                                    // $(this).closest('tr').children("td:eq(1)")[0].firstChild.data"
+                                    var parent = $(this).closest("div");
+                                    var url = parent.attr("id") + ".dat";
+                                    var elem = parent.find("li");
+                                    
+                                    $.akiyoshi.flot.view(elem, url, null, function() {
+
+                                    });
+    
+                               }).gat()
+                                .tag("span", {style:"margin-left: 5px;", class: "label cursor"}).text("Image").gat()
+                            .gat()
+                            .tag("ul", {"class": "media-grid"})
+                                .tag("li")
+                                    .tag("a", {})
+                                        .tag("img", {"class": "thumbnail", src: data.links[j] + extension}).gat()
+                                    .gat()
                                 .gat()
                             .gat()
                         .gat()
                         ;
                     }
-                }
+                };
             });
 
             if (callback) {
