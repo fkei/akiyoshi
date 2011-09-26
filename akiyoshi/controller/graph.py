@@ -18,7 +18,7 @@ class Graph(Rest):
             if param[2] == "png":
                 # image
                 (start, end) = past1_epochsec()
-                size = "normal"
+                size = "small"
                 output = rrdService.make(akiyoshi.config.tmp,
                                            basedir,
                                            param[0],

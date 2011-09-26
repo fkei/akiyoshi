@@ -24,7 +24,10 @@ class GraphService:
             links = []
             for f in os.listdir(hostdir):
                 if re.search(r"^"+category+"*", f):
-                    links.append("%s/%s/%s" % (prefix, host, f))
+                    link = {}
+                    link["url"] = "%s/%s/%s" % (prefix, host, f)
+                    link["name"] = f
+                    links.append(link)
 
             data["links"] = links
             data["extensions"] = extensions

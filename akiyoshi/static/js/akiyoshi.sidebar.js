@@ -14,7 +14,7 @@ $.akiyoshi.addHandler("sidebar", new function() {
                 }
 				for (var i = 0; i < data.length; i++) {
 					$(this).tag("dt")
-						.tag("a", {id: data[i].name}).text(data[i].name).click(function() {
+						.tag("a", {"class" : "cursor", id: data[i].name}).text(data[i].name).click(function() {
                             $.akiyoshi.content.graphPills($(this).attr("id"));
                         }).gat()
                         .gat();
@@ -38,7 +38,7 @@ $.akiyoshi.addHandler("sidebar", new function() {
                 }
 				for (var i = 0; i < data.length; i++) {
 					$(this).tag("dt")
-						.tag("a", {id: data[i].name}).text(data[i].name).click(function() {
+						.tag("a", {"class": "cursor", id: data[i].name}).text(data[i].name).click(function() {
                             $.akiyoshi.content.info("main", $(this).attr("id"));
                             $.akiyoshi.action.update([
                                 {name:"Home", link:"/"},

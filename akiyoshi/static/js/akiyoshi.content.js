@@ -7,7 +7,7 @@ $.akiyoshi.addHandler("content", new function() {
 
             $("#"+id)
             .tagset("div", {class:"well", style:"padding: 14px 19px;"})
-                .tag("button", {class:"btn"}).text("CPU").gat()
+                .tag("span", {style:"margin-left: 5px;", class: "btn cursor"}).text("CPU").click(function() {}).gat()
             .gat()
             .tag("table", {class: "zebra-striped", id: "servers-table"})
                 .tag("thead")
@@ -43,7 +43,7 @@ $.akiyoshi.addHandler("content", new function() {
                                     $(this)
                                     .tag("span", {class: "label cursor"}).click(function() {
                                         var host = $(this).closest('tr').children("td:eq(1)")[0].firstChild.data;
-                                        $.akiyoshi.content.__graphPills(host);
+                                        $.akiyoshi.content.graphPills(host);
                                     }).text("Graph").gat();
 
                                     if (data[i].control === false) {
@@ -84,8 +84,8 @@ $.akiyoshi.addHandler("content", new function() {
                     var data = result[i];
                     for (var j = 0; j < data.links.length; j++) {
                         $(this)
-                        .tag("div", {id: data.links[j]})
-                            .tag("h4").text(data.name)
+                        .tag("div", {id: data.links[j].url})
+                            .tag("h4").text(data.name + " - " + data.links[j].name)
                                 .tag("span", {style:"margin-left: 5px;", class: "label cursor"}).text("Flot").click(function() {
                                     // /graph/s1.fkei.info/cpu-0.dat
                                     // $(this).closest('tr').children("td:eq(1)")[0].firstChild.data"
@@ -98,12 +98,15 @@ $.akiyoshi.addHandler("content", new function() {
                                     });
     
                                }).gat()
-                                .tag("span", {style:"margin-left: 5px;", class: "label cursor"}).text("Image").gat()
+                                .tag("span", {style:"margin-left: 5px;", class: "label cursor"}).text("Image").click(function() {
+                                    var parent = $(this).closest("div");
+                                    $.akiyoshi.content.__graphLins("graph", parent.attr("id"), ".png", function(){});
+                                }).gat()
                             .gat()
                             .tag("ul", {"class": "media-grid"})
                                 .tag("li")
                                     .tag("a", {})
-                                        .tag("img", {"class": "thumbnail", src: data.links[j] + extension}).gat()
+                                        .tag("img", {"class": "thumbnail", src: data.links[j].url + extension}).gat()
                                     .gat()
                                 .gat()
                             .gat()
@@ -145,7 +148,7 @@ $.akiyoshi.addHandler("content", new function() {
                     var nodes = data.nodes;
                     for (var i = 0; i < all.length; i++) {
                         $(this).tag("li")
-                            .tag("a", {id: "/graph/" + host + "/" + all[i]}).text(all[i]).click(function() {
+                            .tag("a", {id: "/graph/" + host + "/" + all[i], "class":"cursor"}).text(all[i]).click(function() {
                                 $.akiyoshi.content.__graphLins("graph", $(this).attr("id"), ".png", function(){});
                                 /**
                                 $("#graph")

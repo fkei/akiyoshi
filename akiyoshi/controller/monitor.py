@@ -29,7 +29,7 @@ class Monitor(Rest):
         monitors = monitorService.list(web.ctx.orm, basedir, category, True)
         self.view["type"] = "host"
         self.view = monitors
-        
+
         return True
 
 

@@ -9,7 +9,7 @@ $.akiyoshi.addHandler("action", new function() {
                         $(this).tag("li", {class: "active"}).text(data.name).gat();
                     } else {
                         $(this)
-                        .tag("a", {link:data.link}).text(data.name).click(function() {
+                        .tag("a", {"class": "cursor", href:data.link}).text(data.name).click(function() {
                             // TODO
                         })
                         .tag("span", {class: "divider"}).text("/").gat()
