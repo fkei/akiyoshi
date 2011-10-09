@@ -16,9 +16,12 @@ class Graph(Rest):
 
         if 3 == len(param):
             if param[2] == "png":
+                # rrd graph
+
+                # TODO self.input("interval")
                 # image
                 (start, end) = past1_epochsec()
-                size = "small"
+                size = "normal-wide"
                 output = rrdService.make(akiyoshi.config.tmp,
                                            basedir,
                                            param[0],
@@ -30,6 +33,7 @@ class Graph(Rest):
                 self.download.type = self.DOWNLOAD_TYPE_FILE
                 self.download.once = True
             elif param[2] == "dat":
+                # rrd fetch
                 targetdir = "%s/%s/%s" % (basedir, param[0], param[1])
                 rrdfiles = nodeService.fsnodes(targetdir)
                 fullRrdFiles = []

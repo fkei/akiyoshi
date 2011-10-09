@@ -7,6 +7,13 @@ import tempfile
 def mktmp():
     return tempfile.mkstemp()
 
+def epochsec2strftime(epochsec, format):
+    """epochsec -> strftime(format) convert.
+    """
+    #time.strftime("%Y/%m/%d %H:%M:%S", time.localtime(int(time.mktime(datetime.datetime.now().timetuple()))))
+    ret = time.strftime(format, time.localtime(epochsec))
+    return ret
+
 def create_epochsec(year, month, day, hour, minute, second):
     """ epochsec
     """
@@ -38,6 +45,26 @@ def pastany_epochsec(day):
     now = datetime.datetime.now()
     prev = create_epochsec_datetime(now - datetime.timedelta(day))
     return prev, create_epochsec_datetime(now)
+
+
+def past1hour_epochsec():
+    """-1hour
+    """
+    now = datetime.datetime.now()
+    yesterday = now - datetime.timedelta(hours=1)
+    now_epochsec = create_epochsec_datetime(now)
+    yesterday_epochsec = create_epochsec_datetime(yesterday)
+    return yesterday_epochsec, now_epochsec
+
+def past12hour_epochsec():
+    """-12hour
+    """
+    now = datetime.datetime.now()
+    yesterday = now - datetime.timedelta(hours=12)
+    now_epochsec = create_epochsec_datetime(now)
+    yesterday_epochsec = create_epochsec_datetime(yesterday)
+    return yesterday_epochsec, now_epochsec
+
 
 def past1_epochsec():
     """-1day

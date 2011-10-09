@@ -1,5 +1,9 @@
 $.akiyoshi.addHandler("flot", new function() {
 	this.view = function(elem, url, data, callback) {
+        if (0 < elem.find(".flot").length) {
+            return; // double check
+        }
+
         data = data || {
             resolution: 300,
             interval: "1day"
@@ -23,9 +27,18 @@ $.akiyoshi.addHandler("flot", new function() {
     };
     
     this.makeFlot = function(elem, data, callback) {
+        //var idle = data.datasets["nice"]["data"];
+        //var hoge = new Date();
+        //for(var i =0; i< idle.length; i++) {
+        //    hoge.setTime(idle[i][0]);
+        //    console.log(idle[i][0]);
+        //    console.log(hoge);
+        //}
         /***** functions *****/
-        var showTooltip = function(x, y, contents) {
-            var tooltip = $('<div class="tooltip">' + contents + '</div>').css( {
+        var showTooltip = function(x, y, label, xval, yval) {
+            xval = $.akiyoshi.util.date2str(xval);
+            var contents = label + " : x = " + xval + ". y = " + yval;
+            var tooltip = $('<div class="tooltip">' + contents + '</div>').css({
                 position: 'absolute',
                 display: 'none',
                 top: y - 40,
@@ -35,6 +48,7 @@ $.akiyoshi.addHandler("flot", new function() {
                 'background-color': '#fee',
                 opacity: 0.80
             });
+            //$.akiyoshi.bootstrap.popovers(tooltip, label, content, {html: true});
             tooltip.appendTo(elem).fadeIn(200);
             //tooltip.appendTo("body").fadeIn(200);
         };
@@ -125,8 +139,12 @@ $.akiyoshi.addHandler("flot", new function() {
         /***** flot options *****/
         var options = {
             series: {
-                lines: {show: true},
-                points: {show: true} // 値のところにポイント（丸）が置かれる
+                lines: {
+                    show: true
+                },
+                points: {
+                    show: true
+                } // 値のところにポイント（丸）が置かれる
             },
             legend: {
                 noColumns: 2,
@@ -134,12 +152,16 @@ $.akiyoshi.addHandler("flot", new function() {
                 container: elem.find(".overviewLegend")
             },
             xaxis: {
-                tickDecimals: 0,
-                ticks: 5 // ｙ軸の間隔
+                tickDecimals: 1,
+                ticks: 5, // ｙ軸の間隔
+                mode: "time",
+                timeformat: "%H:%M"
+                //timeformat: "%y/%m/%d %H:%M"
             },
             yaxis: {
                 min: 0,
-                ticks: 1
+                //max:100,
+                ticks: 4
             },
             selection: {
                 mode: "xy"
@@ -205,8 +227,9 @@ $.akiyoshi.addHandler("flot", new function() {
         elem.find(".placeholder").bind("plothover", function (event, pos, item) {
 
             // Show mouse position
-            if (elem.find(".enablePosition:checked").length > 0) {
-                var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
+            if (elem.find(".enablePosition:checked").length > 0) { 
+                var xval = $.akiyoshi.util.date2str(pos.x.toFixed(2));
+                var str = "x = " + xval + ", y = " + pos.y.toFixed(2);
                 elem.find(".hoverdata").attr("value", str);
             }
             
@@ -217,9 +240,10 @@ $.akiyoshi.addHandler("flot", new function() {
                         elem.find(".tooltip").remove();
                         var x = item.datapoint[0].toFixed(2),
                         y = item.datapoint[1].toFixed(2);
-                        
+
+                        var _label = item.series.label.replace(" = 0", "");
                         showTooltip(item.pageX, item.pageY,
-                                    item.series.label + " of " + x + " = " + y);
+                                    _label, x, y);
                     }
                 }
                 else {
@@ -261,13 +285,12 @@ $.akiyoshi.addHandler("flot", new function() {
     this.makeTemplate = function(elem) {
         elem
         .tagset("div", {"class": "flot"})
-            .tag("div", {style: "float:left:"})
-                //.tag("div", {class: "placeholder", style: "width:200px;height:100px"}).gat()
-                .tag("div", {class: "placeholder", style: "width:600px;height:200px"}).gat()
+            .tag("div", {style: "float:left;"})
+                .tag("div", {class: "placeholder", style: "width:400px;height:200px"}).gat()
             .gat()
 
-            .tag("div", {class: "miniture", style: "float:left; margin-left:20px;"})
-                .tag("div", {class: "overview", style: "width:166px;height:100px"}).gat()
+            .tag("div", {class: "miniture", style: "float:left;"})
+                .tag("div", {class: "overview", style: "width:266px;height:100px"}).gat()
                 .tag("p", {class: "overviewLegend", style: "margin-left:10px;"}).gat()
             .gat()
 
@@ -281,9 +304,9 @@ $.akiyoshi.addHandler("flot", new function() {
                 .tag("div", {"class": "input"})
                     .tag("div", {"class": "input-prepend"})
                         .tag("label", {"class": "add-on"})
-                            .tag("input", {type: "checkbox", name: "enablePosition", class: "enablePosition"}).gat()
+                            .tag("input", {type: "checkbox", name: "enablePosition", class: "enablePosition", checked: "checked"}).gat()
                         .gat()
-                        .tag("input", {style: "font-weight:bold", "class": "medium", class: "hoverdata", name: "hoverdata", size: "32", type: "text", disabled: "disabled"}).gat()
+                        .tag("input", {style: "font-weight:bold", "class": "medium", class: "hoverdata", name: "hoverdata", size: "32", type: "text"}).gat()
                     .gat()
                 .gat()
             .gat()
@@ -294,7 +317,7 @@ $.akiyoshi.addHandler("flot", new function() {
                     .tag("ul", {"class": "inputs-list"})
                         .tag("li")
                             .tag("label")
-                                .tag("input", {type: "checkbox", name: "enableTooltip", class: "enableTooltip"}).gat()
+                                .tag("input", {type: "checkbox", name: "enableTooltip", class: "enableTooltip", checked: "checked"}).gat()
                             .gat()    
                         .gat()    
                     .gat()       

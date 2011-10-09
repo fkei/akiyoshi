@@ -77,9 +77,21 @@ $.akiyoshi.addHandler("content", new function() {
 		});
 	};
 
-    this.__graphLins = function(id, link, extension, callback) {
+    this.__graphLinks = function(id, link, extension, interval, callback) {
+        var self = this;
+
+        var reload = function(interval) {
+            self.__graphLinks(id, link, extension, interval, callback);
+        };
+
         var fn = function(err, result) {
-            $("#"+id).empty().next(function() {
+            $("#"+id)
+            .tagset("div", {class: "well", style: "padding: 5px;"})
+                .tag("span", {style:"margin-left: 5px;", class: "btn cursor"}).text("1 Hour").click(function() {
+                    reload("1hour");
+                }).gat()
+            .gat()
+            .next(function() {
                 for (var i = 0; i < result.length; i++) {
                     var data = result[i];
                     for (var j = 0; j < data.links.length; j++) {
@@ -93,20 +105,20 @@ $.akiyoshi.addHandler("content", new function() {
                                     var url = parent.attr("id") + ".dat";
                                     var elem = parent.find("li");
                                     
-                                    $.akiyoshi.flot.view(elem, url, null, function() {
+                                    $.akiyoshi.flot.view(elem, url, {interval: interval}, function() {
 
                                     });
     
                                }).gat()
                                 .tag("span", {style:"margin-left: 5px;", class: "label cursor"}).text("Image").click(function() {
                                     var parent = $(this).closest("div");
-                                    $.akiyoshi.content.__graphLins("graph", parent.attr("id"), ".png", function(){});
+                                    $.akiyoshi.content.__graphLinks("graph", parent.attr("id"), ".png", function(){});
                                 }).gat()
                             .gat()
                             .tag("ul", {"class": "media-grid"})
                                 .tag("li")
                                     .tag("a", {})
-                                        .tag("img", {"class": "thumbnail", src: data.links[j].url + extension}).gat()
+                                        .tag("img", {"class": "thumbnail", src: data.links[j].url + extension + '?interval=' + interval}).gat()
                                     .gat()
                                 .gat()
                             .gat()
@@ -117,13 +129,14 @@ $.akiyoshi.addHandler("content", new function() {
             });
 
             if (callback) {
-                callback(err, result);
+                callback(null);
             }
         };
 
         $.akiyoshi.ajax.async({
             type: "GET",
-            url: link
+            url: link,
+            data: {interval: interval}
         })
         .success(function(result) {
             fn(null, result);
@@ -149,7 +162,7 @@ $.akiyoshi.addHandler("content", new function() {
                     for (var i = 0; i < all.length; i++) {
                         $(this).tag("li")
                             .tag("a", {id: "/graph/" + host + "/" + all[i], "class":"cursor"}).text(all[i]).click(function() {
-                                $.akiyoshi.content.__graphLins("graph", $(this).attr("id"), ".png", function(){});
+                                $.akiyoshi.content.__graphLinks("graph", $(this).attr("id"), ".png", "1day");
                                 /**
                                 $("#graph")
                                     .tagset("ul", {class: "media-grid"})
