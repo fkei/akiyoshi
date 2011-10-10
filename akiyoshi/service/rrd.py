@@ -17,14 +17,12 @@ from service.plugin import pluginService
 
 class RrdService:
 
-    def graph(self, write_dir, basedir, host, category, start, end, size="small"):
-
+    def graph(self, write_dir, basedir, host, category, interval, size="small"):
         plugin = pluginService.getRrdType(category)
-
         read_dir = "%s/%s/%s" % (basedir, host, category)
+        (interval, start, end) = self._analysisInterval(interval)
 
         path = plugin.graph(read_dir, write_dir, category, start, end, size)
-
         return path
 
     def _analysisInterval(self, interval):

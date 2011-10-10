@@ -17,18 +17,22 @@ class Graph(Rest):
         if 3 == len(param):
             if param[2] == "png":
                 # rrd graph
+                if self.input.has_key("interval"):
+                    interval = self.input.interval
+                else:
+                    interval = "1day"
 
-                # TODO self.input("interval")
                 # image
                 (start, end) = past1_epochsec()
                 size = "normal-wide"
+
                 output = rrdService.graph(akiyoshi.config.tmp,
-                                           basedir,
-                                           param[0],
-                                           param[1],
-                                           start,
-                                           end,
-                                           size)
+                                          basedir,
+                                          param[0],
+                                          param[1],
+                                          interval,
+                                          size)
+
                 self.download.file = output
                 self.download.type = self.DOWNLOAD_TYPE_FILE
                 self.download.once = True

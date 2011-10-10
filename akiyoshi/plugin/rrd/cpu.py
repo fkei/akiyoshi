@@ -15,7 +15,7 @@ def graph(read_dir, write_dir, category, start, end, size="small"):
 
     write_file_path = "%s/%s.png" % (write_dir, generate_phrase(12))
 
-    rrdtool.graph(write_file_path,
+    _setting = [
         "--font", options["font"],
         "--title", str(category),
         "--vertical-label", "jiffies",
@@ -26,6 +26,9 @@ def graph(read_dir, write_dir, category, start, end, size="small"):
         "--start", start,
         "--end",   end,
         "--legend-direction", "bottomup",
+        ]
+
+    _def = [
         "DEF:idle=%s/cpu-idle.rrd:value:AVERAGE" % str(read_dir),
         "DEF:interrupt=%s/cpu-interrupt.rrd:value:AVERAGE" % str(read_dir),
         "DEF:nice=%s/cpu-nice.rrd:value:AVERAGE" % str(read_dir),
@@ -34,7 +37,11 @@ def graph(read_dir, write_dir, category, start, end, size="small"):
         "DEF:system=%s/cpu-system.rrd:value:AVERAGE" % str(read_dir),
         "DEF:softirq=%s/cpu-softirq.rrd:value:AVERAGE" % str(read_dir),
         "DEF:steal=%s/cpu-steal.rrd:value:AVERAGE" % str(read_dir),
+        ]
+    _area = [
         "AREA:steal#000000:Steal    ",
+        ]
+    _val = [
         "GPRINT:steal:MIN:%8.2lf",
         "GPRINT:steal:MAX:%8.2lf",
         "GPRINT:steal:AVERAGE:%8.2lf",
@@ -74,9 +81,15 @@ def graph(read_dir, write_dir, category, start, end, size="small"):
         "GPRINT:idle:MAX:%8.2lf",
         "GPRINT:idle:AVERAGE:%8.2lf",
         "GPRINT:idle:LAST:%8.2lf\\n",
+        ]
+    _comment = [
         "COMMENT:%s" % options["comment"],
         "COMMENT: \\n"
-    )
+        ]
+
+    param = [write_file_path] + _setting + _def + _area + _val + _comment
+
+    rrdtool.graph(param)
     return write_file_path
 
 if __name__ == '__main__':

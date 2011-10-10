@@ -15,7 +15,7 @@ rrd = {
     "normal-wide": {
         "font": "DEFAULT:7:",
         "width": "600",
-        "height": "100",
+        "height": "200",
         "comment": "color             min        max       avg        cur\\n",
         },
     "large": {

@@ -81,14 +81,30 @@ $.akiyoshi.addHandler("content", new function() {
         var self = this;
 
         var reload = function(interval) {
+            debugger;
             self.__graphLinks(id, link, extension, interval, callback);
         };
 
         var fn = function(err, result) {
             $("#"+id)
-            .tagset("div", {class: "well", style: "padding: 5px;"})
-                .tag("span", {style:"margin-left: 5px;", class: "btn cursor"}).text("1 Hour").click(function() {
+            .tagset("div", {"class": "well", style: "padding: 5px;"})
+                .tag("span", {id: "graph1hour", style:"margin-left: 5px;", class: "btn cursor"}).text("1 Hour").click(function() {
                     reload("1hour");
+                }).gat()
+                .tag("span", {id: "graph12hour", style:"margin-left: 5px;", class: "btn cursor"}).text("12 Hour").click(function() {
+                    reload("12hour");
+                }).gat()
+                .tag("span", {id: "graph1day", style:"margin-left: 5px;", class: "btn cursor primary"}).text("1 Day").click(function() {
+                    reload("1day");
+                }).gat()
+                .tag("span", {id: "graph7day", style:"margin-left: 5px;", class: "btn cursor"}).text("1 Week").click(function() {
+                    reload("7day");
+                }).gat()
+                .tag("span", {id: "graph30day", style:"margin-left: 5px;", class: "btn cursor"}).text("1 Month").click(function() {
+                    reload("30day");
+                }).gat()
+                .tag("span", {id: "graph365day", style:"margin-left: 5px;", class: "btn cursor"}).text("1 Year").click(function() {
+                    reload("365day");
                 }).gat()
             .gat()
             .next(function() {
@@ -126,6 +142,16 @@ $.akiyoshi.addHandler("content", new function() {
                         ;
                     }
                 };
+            });
+
+            // select datetime.
+            $("#"+id).find(".well").children().each(function(idx, elem) {
+                if ($(this).attr("id") === "graph"+interval) {
+                    $(this).addClass("primary");
+                } else {
+                    $(this).removeClass("primary");
+                }
+                
             });
 
             if (callback) {
