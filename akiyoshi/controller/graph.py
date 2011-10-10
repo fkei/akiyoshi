@@ -22,7 +22,7 @@ class Graph(Rest):
                 # image
                 (start, end) = past1_epochsec()
                 size = "normal-wide"
-                output = rrdService.make(akiyoshi.config.tmp,
+                output = rrdService.graph(akiyoshi.config.tmp,
                                            basedir,
                                            param[0],
                                            param[1],

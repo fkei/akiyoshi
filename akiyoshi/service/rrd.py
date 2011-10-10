@@ -10,22 +10,24 @@ from lib.common import pastany_epochsec, \
      past1hour_epochsec, \
      past12hour_epochsec, \
      epochsec2strftime
-
 from lib.const import format
-import lib.rrd
-from lib.rrd import cpu
+import akiyoshi
+
+from service.plugin import pluginService
 
 class RrdService:
 
-    def make(self, write_dir, basedir, host, category, start, end, size="small"):
+    def graph(self, write_dir, basedir, host, category, start, end, size="small"):
+
+        plugin = pluginService.getRrdType(category)
+
         read_dir = "%s/%s/%s" % (basedir, host, category)
-        path = cpu.make(read_dir, write_dir, category, start, end, size)
+
+        path = plugin.graph(read_dir, write_dir, category, start, end, size)
+
         return path
 
-    def fetchTime(self, rrdfiles, type, resolution, start, end):
-        pass
-
-    def fetch(self, rrdfiles, type, resolution, interval):
+    def _analysisInterval(self, interval):
         _interval = "1day" # default
 
         if interval == "1hour":
@@ -56,14 +58,21 @@ class RrdService:
             try:
                 day = int(interval.replace("day", ""))
                 _interval = "1day"
+                (start, end) = pastany_epochsec(day)
             except:
                 day = 1
                 _interval = "1day"
-            (start, end) = pastany_epochsec(day)
+                (start, end) = pastany_epochsec(day)
 
-        datas = lib.rrd.fetch(rrdfiles, type, resolution, start, end)
+        return (_interval, start, end)
 
-        ret = self._formatting(rrdfiles, datas, _interval)
+    def fetch(self, rrdfiles, type, resolution, interval):
+        (interval, start, end) = self._analysisInterval(interval)
+
+        plugin = pluginService.getRrd()
+        datas = plugin.fetch(rrdfiles, type, resolution, start, end)
+
+        ret = self._formatting(rrdfiles, datas, interval)
         return ret
 
 

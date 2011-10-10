@@ -11,5 +11,9 @@ __app__ = "akiyoshi"
 options = None # @see bootstrap.start
 config = None # @see bootstrap.start
 log = None # @see bootstrap.start
+plugins = {} # @see plugin.load
+
 
 dirname=os.path.dirname(__file__)
+
+

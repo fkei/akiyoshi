@@ -22,5 +22,8 @@
     "admin": {
         "user" : "admin",
         "password" : "admin"
+    },
+    "plugin": {
+        "rrd": ["cpu", "df", "disk", "interface", "load", "memory", "uptime", "users"]
     }
 }

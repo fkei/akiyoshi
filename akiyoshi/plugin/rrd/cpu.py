@@ -4,19 +4,14 @@
 import os
 import rrdtool
 
-from lib.const import rrd
+from lib.const import rrd as RRD
 from lib.common import generate_phrase
 
-def make(read_dir, write_dir, category, start, end, size="small"):
-    if size:
-        options = rrd[size]
-    else:
-        options = rrd["small"]
+def graph(read_dir, write_dir, category, start, end, size="small"):
+    options = RRD[size]
 
     if os.path.isdir(read_dir) is False:
-        print "read_dir error" # TODO
-    if os.path.isfile("/tmp/hoge.png") is False:
-        print "write_dir error" # TODO
+        print "read_dir error"
 
     write_file_path = "%s/%s.png" % (write_dir, generate_phrase(12))
 

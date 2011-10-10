@@ -19,6 +19,7 @@ import akiyoshi
 import processor
 import bootstrap
 import urls
+import plugin
 
 def main():
     if bootstrap.start() is False:
@@ -32,6 +33,9 @@ def main():
     # load processor!!
     app.add_processor(processor.load_database)
 
+    # load plugin
+    plugin.load()
+    
     # start
     try:
         akiyoshi.log.info("akiyoshi web server start.")
