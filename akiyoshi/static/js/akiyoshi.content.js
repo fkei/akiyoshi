@@ -6,16 +6,16 @@ $.akiyoshi.addHandler("content", new function() {
 			}
 
             $("#"+id)
-            .tagset("div", {class:"well", style:"padding: 14px 19px;"})
-                .tag("span", {style:"margin-left: 5px;", class: "btn cursor"}).text("CPU").click(function() {}).gat()
+            .tagset("div", {"class":"well", style:"padding: 14px 19px;"})
+                .tag("span", {style:"margin-left: 5px;", "class": "btn cursor"}).text("CPU").click(function() {}).gat()
             .gat()
-            .tag("table", {class: "zebra-striped", id: "servers-table"})
+            .tag("table", {"class": "zebra-striped", id: "servers-table"})
                 .tag("thead")
                     .tag("tr")
-                        .tag("th", {class: "header"}).text("#").gat()
-                        .tag("th", {class: "yellow header headerSortDown"}).text("Host").gat()
-                        .tag("th", {class: "blue header headerSortDown"}).text("Status").gat()
-                        .tag("th", {class: "green header headerSortDown"}).text("Action").gat()
+                        .tag("th", {"class": "header"}).text("#").gat()
+                        .tag("th", {"class": "yellow header headerSortDown"}).text("Host").gat()
+                        .tag("th", {"class": "blue header headerSortDown"}).text("Status").gat()
+                        .tag("th", {"class": "green header headerSortDown"}).text("Action").gat()
                     .gat()
                 .gat()
                 .tag("tbody")
@@ -34,14 +34,14 @@ $.akiyoshi.addHandler("content", new function() {
                             $(this)
                             .tag("tr")
                                 .tag("td").text(i).gat()
-                                .tag("td", {class:"host", style: "color: #00438A;"}).text(data[i].name).next(function(){
+                                .tag("td", {"class":"host", style: "color: #00438A;"}).text(data[i].name).next(function(){
                                     $.akiyoshi.bootstrap.popovers($(this), "Infomation", popup(data[i]), {html: true});
                                 })
                                 .gat()
                                 .tag("td").text(data[i].control ? "Managed" : "Unmanaged").gat()
                                 .tag("td").next(function() {
                                     $(this)
-                                    .tag("span", {class: "label cursor"}).click(function() {
+                                    .tag("span", {"class": "label cursor"}).click(function() {
                                         var host = $(this).closest('tr').children("td:eq(1)")[0].firstChild.data;
                                         $.akiyoshi.content.graphPills(host);
                                     }).text("Graph").gat();
@@ -49,7 +49,7 @@ $.akiyoshi.addHandler("content", new function() {
                                     if (data[i].control === false) {
                                         // Unmanaged
                                         $(this)
-                                        .tag("span", {class: "label cursor", "data-controls-modal": "modal", "data-backdrop": true, "data-keyboard": true}).text("Add")
+                                        .tag("span", {"class": "label cursor", "data-controls-modal": "modal", "data-backdrop": true, "data-keyboard": true}).text("Add")
                                         .click(function() {
                                             var host = $(this).closest('tr').children("td:eq(1)")[0].firstChild.data;
                                             $.akiyoshi.node.postModal(host, function(err, result) {
@@ -84,25 +84,29 @@ $.akiyoshi.addHandler("content", new function() {
             self.__graphLinks(id, link, extension, interval, callback);
         };
 
+        var reloadRrd = function(checks) {
+            
+        };
+
         var fn = function(err, result) {
             $("#"+id)
             .tagset("div", {"class": "well", style: "padding: 5px;"})
-                .tag("span", {id: "graph1hour", style:"margin-left: 5px;", class: "btn cursor"}).text("1 Hour").click(function() {
+                .tag("span", {id: "graph1hour", style:"margin-left: 5px;", "class": "btn cursor"}).text("1 Hour").click(function() {
                     reload("1hour");
                 }).gat()
-                .tag("span", {id: "graph12hour", style:"margin-left: 5px;", class: "btn cursor"}).text("12 Hour").click(function() {
+                .tag("span", {id: "graph12hour", style:"margin-left: 5px;", "class": "btn cursor"}).text("12 Hour").click(function() {
                     reload("12hour");
                 }).gat()
-                .tag("span", {id: "graph1day", style:"margin-left: 5px;", class: "btn cursor primary"}).text("1 Day").click(function() {
+                .tag("span", {id: "graph1day", style:"margin-left: 5px;", "class": "btn cursor primary"}).text("1 Day").click(function() {
                     reload("1day");
                 }).gat()
-                .tag("span", {id: "graph7day", style:"margin-left: 5px;", class: "btn cursor"}).text("1 Week").click(function() {
+                .tag("span", {id: "graph7day", style:"margin-left: 5px;", "class": "btn cursor"}).text("1 Week").click(function() {
                     reload("7day");
                 }).gat()
-                .tag("span", {id: "graph30day", style:"margin-left: 5px;", class: "btn cursor"}).text("1 Month").click(function() {
+                .tag("span", {id: "graph30day", style:"margin-left: 5px;", "class": "btn cursor"}).text("1 Month").click(function() {
                     reload("30day");
                 }).gat()
-                .tag("span", {id: "graph365day", style:"margin-left: 5px;", class: "btn cursor"}).text("1 Year").click(function() {
+                .tag("span", {id: "graph365day", style:"margin-left: 5px;", "class": "btn cursor"}).text("1 Year").click(function() {
                     reload("365day");
                 }).gat()
             .gat()
@@ -111,13 +115,13 @@ $.akiyoshi.addHandler("content", new function() {
                     var data = result[i];
                     for (var j = 0; j < data.links.length; j++) {
                         $(this)
-                        .tag("div", {id: data.links[j].url, style:"margin: 0px 0px 34px 0px"})
+                        .tag("div", {id: data.links[j].name, uri:data.links[j].url, style:"margin: 0px 0px 34px 0px"})
                             .tag("h4").text(data.name + " - " + data.links[j].name)
-                                .tag("span", {style:"margin-left: 5px;", class: "label cursor"}).text("Flot").click(function() {
+                                .tag("span", {style:"margin-left: 5px;", "class": "label cursor"}).text("Flot").click(function() {
                                     // /graph/s1.fkei.info/cpu-0.dat
                                     // $(this).closest('tr').children("td:eq(1)")[0].firstChild.data"
                                     var parent = $(this).closest("div");
-                                    var url = parent.attr("id") + ".dat";
+                                    var url = parent.attr("uri") + ".dat";
                                     var elem = parent.find("li");
                                     
                                     $.akiyoshi.flot.view(elem, url, {interval: interval}, function() {
@@ -125,7 +129,7 @@ $.akiyoshi.addHandler("content", new function() {
                                     });
     
                                }).gat()
-                                .tag("span", {style:"margin-left: 5px;", class: "label cursor"}).text("Image").click(function() {
+                                .tag("span", {style:"margin-left: 5px;", "class": "label cursor"}).text("Image").click(function() {
                                     var parent = $(this).closest("div");
                                     $.akiyoshi.content.__graphLinks("graph", parent.attr("id"), ".png", function(){});
                                 }).gat()
@@ -134,6 +138,53 @@ $.akiyoshi.addHandler("content", new function() {
                                 .tag("li")
                                     .tag("a", {})
                                         .tag("img", {"class": "thumbnail", src: data.links[j].url + extension + '?interval=' + interval}).gat()
+                                    .gat()
+
+                                .gat()
+                            .gat()
+
+                            .tag("span", {"class": "label cursor notice", style:"margin-left: 54px"}).text("Detail").click(function() {
+                                $(this).parent().find(".detail").toggle("fast");
+                            }).gat()
+                        
+                            .tag("div", {"class": "detail", style: "display:block;"})
+                                .tag("div", {"class": "choices"})
+                                    .tag("div", {"class": "clearfix"})
+                                        .tag("label", {"class": "cboxtype"}).text("Display list").gat()
+                                        .tag("div", {"class": "input", style: "margin-left: 150px"})
+                                            .tag("ul", {"class": "inputs-list"})
+                                            .next(function() {
+                                                var types = data.links[j].type;
+                                                for (var k = 0; k < types.length; k++) {
+                                                    var type = types[k];
+                                                    $(this)
+                                                    .tag("li")
+                                                        .tag("label")
+                                                            .tag("input", {type: "checkbox", id:type, name: type, checked:"checked", value: type, link: data.links[j].url, parent: data.links[j].name}).click(function() {
+                                                                // Custom RRD
+                                                                var nowTypes = [];
+                                                                $(this).closest(".choices").find("input:checked").each(function(idx, elem) {
+                                                                    nowTypes.push($(this).attr("value"));
+                                                                });
+                                                                if (nowTypes.length < 1) {
+                                                                    alert("TODO not checked");
+                                                                    return false;
+                                                                }
+                                                                var link = $(this).attr("link");
+                                                                var url =  link + extension + '?interval=' + interval + "&types=" + nowTypes.join(",");
+                                                                var elem = $("#"+$(this).attr("parent"));
+                                                                var img = elem.find("img:.thumbnail");
+                                                                img.attr("src", url);
+                                                                ;
+                                                            }).gat()
+                                                            .tag("span", {sytle: "padding-left: 4px;"}).text(type).gat()
+                                                        .gat()
+                                                    .gat()
+                                                    ;
+                                                }
+                                            })
+                                            .gat()
+                                        .gat()
                                     .gat()
                                 .gat()
                             .gat()
@@ -180,7 +231,7 @@ $.akiyoshi.addHandler("content", new function() {
         })
         .success(function(data) {
             $("#main")
-                .tagset("div", {class: "pills"})
+                .tagset("div", {"class": "pills"})
                 .next(function() {
                     var all = data.all;
                     var nodes = data.nodes;
@@ -190,10 +241,10 @@ $.akiyoshi.addHandler("content", new function() {
                                 $.akiyoshi.content.__graphLinks("graph", $(this).attr("id"), ".png", "1day");
                                 /**
                                 $("#graph")
-                                    .tagset("ul", {class: "media-grid"})
+                                    .tagset("ul", {"class": "media-grid"})
                                         .tag("li")
                                             .tag("a", {href: "#"})
-                                                .tag("img", {class: "thumbnail", src: $(this).attr("id")}).gat()
+                                                .tag("img", {"class": "thumbnail", src: $(this).attr("id")}).gat()
                                             .gat()
                                         .gat()
                                     .gat();
@@ -209,8 +260,8 @@ $.akiyoshi.addHandler("content", new function() {
                     ]);
                 })
                 .gat()
-                .tag("div", {class: "clear"}).gat()
-                .tag("div", {id: "graph", class: "graph"}).gat()
+                .tag("div", {"class": "clear"}).gat()
+                .tag("div", {id: "graph", "class": "graph"}).gat()
             ;
         })
         .error(function(jqXHR, textStatus, errorThrown) {

@@ -22,11 +22,16 @@ class GraphService:
                 continue
 
             links = []
+
             for f in os.listdir(hostdir):
                 if re.search(r"^"+category+"*", f):
                     link = {}
                     link["url"] = "%s/%s/%s" % (prefix, host, f)
                     link["name"] = f
+                    link["type"] = []
+                    for t in os.listdir("%s/%s" % (hostdir, f)):
+                        link["type"].append(os.path.splitext(t)[0].replace(category+"-", ""))
+
                     links.append(link)
 
             data["links"] = links

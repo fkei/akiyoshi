@@ -22,6 +22,11 @@ class Graph(Rest):
                 else:
                     interval = "1day"
 
+                if self.input.has_key("types") and 0 < len(self.input.types):
+                    types = self.input.types.split(",")
+                else:
+                    types = None
+
                 # image
                 (start, end) = past1_epochsec()
                 size = "normal-wide"
@@ -31,6 +36,7 @@ class Graph(Rest):
                                           param[0],
                                           param[1],
                                           interval,
+                                          types,
                                           size)
 
                 self.download.file = output
