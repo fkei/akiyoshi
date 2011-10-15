@@ -81,7 +81,6 @@ $.akiyoshi.addHandler("content", new function() {
         var self = this;
 
         var reload = function(interval) {
-            debugger;
             self.__graphLinks(id, link, extension, interval, callback);
         };
 
@@ -112,7 +111,7 @@ $.akiyoshi.addHandler("content", new function() {
                     var data = result[i];
                     for (var j = 0; j < data.links.length; j++) {
                         $(this)
-                        .tag("div", {id: data.links[j].url})
+                        .tag("div", {id: data.links[j].url, style:"margin: 0px 0px 34px 0px"})
                             .tag("h4").text(data.name + " - " + data.links[j].name)
                                 .tag("span", {style:"margin-left: 5px;", class: "label cursor"}).text("Flot").click(function() {
                                     // /graph/s1.fkei.info/cpu-0.dat
@@ -122,7 +121,7 @@ $.akiyoshi.addHandler("content", new function() {
                                     var elem = parent.find("li");
                                     
                                     $.akiyoshi.flot.view(elem, url, {interval: interval}, function() {
-
+                                        
                                     });
     
                                }).gat()
