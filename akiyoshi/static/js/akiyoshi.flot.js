@@ -27,6 +27,7 @@ $.akiyoshi.addHandler("flot", new function() {
     };
     
     this.makeFlot = function(elem, data, callback) {
+        debugger;
         //var idle = data.datasets["nice"]["data"];
         //var hoge = new Date();
         //for(var i =0; i< idle.length; i++) {
@@ -115,10 +116,15 @@ $.akiyoshi.addHandler("flot", new function() {
                             show: true,
                             lineWidth: 1
                         },
+                        points: {
+                            show: false
+                        },
                         shadowSize: 0
                     },
                     xaxis: {
-                        ticks: 4
+                        ticks: 4,
+                        mode: "time",
+                        timeformat: data.format
                     },
                     yaxis: {
                         ticks: 3
@@ -155,7 +161,7 @@ $.akiyoshi.addHandler("flot", new function() {
                 tickDecimals: 1,
                 ticks: 5, // ｙ軸の間隔
                 mode: "time",
-                timeformat: "%H:%M"
+                timeformat: data.format
                 //timeformat: "%y/%m/%d %H:%M"
             },
             yaxis: {
@@ -193,6 +199,7 @@ $.akiyoshi.addHandler("flot", new function() {
             val.color = i;
             ++i;
         });
+
         var choiceContainer = elem.find(".flot .detail .choices");
 
         // 項目ON/OFF checkbox

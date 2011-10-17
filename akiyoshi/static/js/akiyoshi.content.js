@@ -79,14 +79,86 @@ $.akiyoshi.addHandler("content", new function() {
 
     this.__graphLinks = function(id, link, extension, interval, callback) {
         var self = this;
+        console.log(link);
+        if (!interval) {
+            $("#"+id+" .well").children("span").each(function(idx, elem) {
+                if ($(this).is(".primary")) {
+                    interval = $(this).attr("id").replace(/^graph/, "");
+                }
+            });
+        }
 
         var reload = function(interval) {
             self.__graphLinks(id, link, extension, interval, callback);
         };
 
-        var reloadRrd = function(checks) {
-            
-        };
+        var makeRrdTemplate = function(err, elem, link) {
+            if (err) {
+                alert("TODO : error ");
+                return false;
+            }
+            var view = elem.find(".view");
+            if (view) {
+                view.remove();
+            }
+
+            elem
+            .tag("div", {"class": "view"})
+                .tag("ul", {"class": "media-grid"})
+                    .tag("li")
+                        .tag("a", {})
+                            .tag("img", {"class": "thumbnail", src: link.url + extension + '?interval=' + interval}).gat()
+                        .gat()
+                    .gat()
+                    .gat()
+                    .tag("span", {"class": "label cursor notice", style:"margin-left: 54px"}).text("Detail").click(function() {
+                        $(this).parent().find(".detail").toggle("fast");
+                    }).gat()
+                    .tag("div", {"class": "detail", style: "display:none;"})
+                        .tag("div", {"class": "choices"})
+                            .tag("div", {"class": "clearfix"})
+                                .tag("label", {"class": "cboxtype"}).text("Display list").gat()
+                                .tag("div", {"class": "input", style: "margin-left: 150px"})
+                                    .tag("ul", {"class": "inputs-list"})
+                                    .next(function() {
+                                        var types = link.type;
+                                        for (var k = 0; k < types.length; k++) {
+                                            var type = types[k];
+                                            $(this)
+                                            .tag("li")
+                                                .tag("label")
+                                                    .tag("input", {type: "checkbox", id:type, name: type, checked:"checked", value: type, link: link.url, parent: link.name}).click(function() {
+                                                        // Custom RRD
+                                                        var nowTypes = [];
+                                                        $(this).closest(".choices").find("input:checked").each(function(idx, elem) {
+                                                            nowTypes.push($(this).attr("value"));
+                                                        });
+                                                        if (nowTypes.length < 1) {
+                                                            alert("TODO not checked");
+                                                            return false;
+                                                        }
+                                                        var link = $(this).attr("link");
+                                                        var url =  link + extension + '?interval=' + interval + "&types=" + nowTypes.join(",");
+                                                        var elem = $("#"+$(this).attr("parent"));
+                                                        var img = elem.find("img:.thumbnail");
+                                                        img.attr("src", url);
+                                                        ;
+                                                    })
+                                                .gat()
+                                                .tag("span", {sytle: "padding-left: 4px;"}).text(type).gat()
+                                            .gat()
+                                        .gat()
+                                        ;
+                                        }
+                                    })
+                                .gat()
+                            .gat()
+                        .gat()
+                    .gat()
+                .gat()
+            .gat()
+            ;
+        }
 
         var fn = function(err, result) {
             $("#"+id)
@@ -118,77 +190,44 @@ $.akiyoshi.addHandler("content", new function() {
                         .tag("div", {id: data.links[j].name, uri:data.links[j].url, style:"margin: 0px 0px 34px 0px"})
                             .tag("h4").text(data.name + " - " + data.links[j].name)
                                 .tag("span", {style:"margin-left: 5px;", "class": "label cursor"}).text("Flot").click(function() {
-                                    // /graph/s1.fkei.info/cpu-0.dat
-                                    // $(this).closest('tr').children("td:eq(1)")[0].firstChild.data"
+                                    $(this).parent().children().each(function(idx, elem) {
+                                        $(this).removeClass("notice");
+                                    });
+                                    $(this).addClass("notice");
+
                                     var parent = $(this).closest("div");
                                     var url = parent.attr("uri") + ".dat";
-                                    var elem = parent.find("li");
-                                    
-                                    $.akiyoshi.flot.view(elem, url, {interval: interval}, function() {
-                                        
+                                    var elem = parent.find("div.view");
+                                    $.akiyoshi.flot.view(elem, url, {interval: interval}, function() {});
+                                }).gat()
+                                .tag("span", {style:"margin-left: 5px;", "class": "label cursor notice"}).text("Image").click(function() {
+                                    $(this).parent().children().each(function(idx, elem) {
+                                        $(this).removeClass("notice");
                                     });
-    
-                               }).gat()
-                                .tag("span", {style:"margin-left: 5px;", "class": "label cursor"}).text("Image").click(function() {
+                                    $(this).addClass("notice");
+
                                     var parent = $(this).closest("div");
-                                    $.akiyoshi.content.__graphLinks("graph", parent.attr("id"), ".png", function(){});
+                                    $.akiyoshi.ajax.async({
+                                        type: "GET",
+                                        url: parent.attr("uri"),
+                                        data: {interval: interval}
+                                    })
+                                    .success(function(result) {
+                                        makeRrdTemplate(null, parent, data.links[0]);
+                                    })
+                                    .error(function(jqXHR, textStatus, errorThrown) {
+			                            makeRrdTemplate(textStatus);
+                                    })
+                                    .end()
+		                            ;
+                                    //makeRrdTemplate($(this), data.links[j]);
                                 }).gat()
                             .gat()
-                            .tag("ul", {"class": "media-grid"})
-                                .tag("li")
-                                    .tag("a", {})
-                                        .tag("img", {"class": "thumbnail", src: data.links[j].url + extension + '?interval=' + interval}).gat()
-                                    .gat()
-
-                                .gat()
-                            .gat()
-
-                            .tag("span", {"class": "label cursor notice", style:"margin-left: 54px"}).text("Detail").click(function() {
-                                $(this).parent().find(".detail").toggle("fast");
-                            }).gat()
-                        
-                            .tag("div", {"class": "detail", style: "display:block;"})
-                                .tag("div", {"class": "choices"})
-                                    .tag("div", {"class": "clearfix"})
-                                        .tag("label", {"class": "cboxtype"}).text("Display list").gat()
-                                        .tag("div", {"class": "input", style: "margin-left: 150px"})
-                                            .tag("ul", {"class": "inputs-list"})
-                                            .next(function() {
-                                                var types = data.links[j].type;
-                                                for (var k = 0; k < types.length; k++) {
-                                                    var type = types[k];
-                                                    $(this)
-                                                    .tag("li")
-                                                        .tag("label")
-                                                            .tag("input", {type: "checkbox", id:type, name: type, checked:"checked", value: type, link: data.links[j].url, parent: data.links[j].name}).click(function() {
-                                                                // Custom RRD
-                                                                var nowTypes = [];
-                                                                $(this).closest(".choices").find("input:checked").each(function(idx, elem) {
-                                                                    nowTypes.push($(this).attr("value"));
-                                                                });
-                                                                if (nowTypes.length < 1) {
-                                                                    alert("TODO not checked");
-                                                                    return false;
-                                                                }
-                                                                var link = $(this).attr("link");
-                                                                var url =  link + extension + '?interval=' + interval + "&types=" + nowTypes.join(",");
-                                                                var elem = $("#"+$(this).attr("parent"));
-                                                                var img = elem.find("img:.thumbnail");
-                                                                img.attr("src", url);
-                                                                ;
-                                                            }).gat()
-                                                            .tag("span", {sytle: "padding-left: 4px;"}).text(type).gat()
-                                                        .gat()
-                                                    .gat()
-                                                    ;
-                                                }
-                                            })
-                                            .gat()
-                                        .gat()
-                                    .gat()
-                                .gat()
-                            .gat()
+                            .next(function() { 
+                               makeRrdTemplate(null, $(this), data.links[j]);
+                            })
                         .gat()
+                    .gat()
                         ;
                     }
                 };
@@ -200,8 +239,7 @@ $.akiyoshi.addHandler("content", new function() {
                     $(this).addClass("primary");
                 } else {
                     $(this).removeClass("primary");
-                }
-                
+                }                
             });
 
             if (callback) {

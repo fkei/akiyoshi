@@ -24,7 +24,8 @@ class GraphService:
             links = []
 
             for f in os.listdir(hostdir):
-                if re.search(r"^"+category+"*", f):
+                regx = "^("+category+")"
+                if re.search(regx, f):
                     link = {}
                     link["url"] = "%s/%s/%s" % (prefix, host, f)
                     link["name"] = f
