@@ -1,0 +1,30 @@
+  <div id="modal" class="modal hide fade" style="display: none;"></div>
+
+  <div id="about-modal" class="modal hide fade" style="display: none;">
+    <div class="modal-header">
+      <a href="#" class="close">×</a>
+      <h3>About akiyoshi project</h3>
+    </div>
+    <div class="modal-body">
+      <a href="https://github.com/fkei/akiyoshi">Akiyoshi Project</a> © 2011 - Japa
+      <h3>Using open source</h3>
+      <ul>
+        <li>rrdtool</li>
+        <li>collectd</li>
+        <li>python >= 2.4</li>
+        <li>SQLAlchemy</li>
+        <li>Mako</li>
+        <li>web.py</li>
+        <li>jquery</li>
+        <li>jquery.flot.js</li>
+        <li>javascriptrrd</li>
+      </ul>
+      <h3>Open source has been helpful</h3>
+      <ul>
+        <li>karesansui project</li>
+      <ul>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn close small">Close</a>
+    </div>
+  </div>

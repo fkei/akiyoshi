@@ -196,8 +196,8 @@ def make_steal(read_dir, last=False):
     return (_def, _val, _area)
 
 
-def graph(read_dir, write_dir, category, start, end, types=None, size="small"):
-    print types
+def graph(read_dir, write_dir, category, start, end, type, types=None, size="small"):
+    #print types
     read_dir = str(read_dir)
 
     options = RRD[size]
@@ -258,7 +258,7 @@ def graph(read_dir, write_dir, category, start, end, types=None, size="small"):
 
 
     param = [write_file_path] + _setting + _def + _area + _val + _comment
-    for x in param: print x
+    #for x in param: print x
     
     rrdtool.graph(param)
     return write_file_path

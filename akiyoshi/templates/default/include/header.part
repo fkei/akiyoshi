@@ -1,0 +1,31 @@
+    <div id="header">
+      <div class="topbar-wrapper" style="z-index: 5;">
+        <div class="topbar">
+          <div class="topbar-inner">
+            <div class="container">
+              <h3><a href="/">Akiyoshi Project</a></h3>
+              <ul id="navigation" class="nav">
+                <li class="active"><a href="/">Home</a></li>
+                <li><a href="/monitor">Monitoring</a></li>
+                <li><a href="/notification">Notification</a></li>
+              </ul>
+              <ul id="setting" class="nav secondary-nav">
+                <li class="menu">
+                  <a href="#" class="menu">Setting</a>
+                  <ul class="menu-dropdown">
+                    <li><a href="#">Account</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                    <li class="divider"></li>
+                    <li>
+                      <a data-controls-modal="about-modal" data-backdrop="true" data-keyboard="true" class="link" href="#">
+                        About
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -26,7 +26,9 @@ def main():
         sys.exit(1)
 
     # web
-    app = web.application(urls.load(), globals(), autoreload=True)
+    urls_val = urls.load()
+    print urls_val
+    app = web.application(urls_val, globals(), autoreload=True)
     app.internalerror = web.debugerror
     sys.argv = [] # web.py argv clean.
 

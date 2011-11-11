@@ -10,6 +10,7 @@ from lib.common import pastany_epochsec, \
      past1hour_epochsec, \
      past12hour_epochsec, \
      epochsec2strftime
+
 from lib.const import format
 import akiyoshi
 
@@ -17,12 +18,12 @@ from service.plugin import pluginService
 
 class RrdService:
 
-    def graph(self, write_dir, basedir, host, category, interval, types=None, size="small"):
+    def graph(self, write_dir, basedir, host, category, interval, type, types=None, size="small"):
         plugin = pluginService.getRrdType(category)
         read_dir = "%s/%s/%s" % (basedir, host, category)
         (interval, start, end) = self._analysisInterval(interval)
 
-        path = plugin.graph(read_dir, write_dir, category, start, end, types, size)
+        path = plugin.graph(read_dir, write_dir, category, start, end, type, types, size)
         return path
 
     def _analysisInterval(self, interval):
@@ -64,11 +65,11 @@ class RrdService:
 
         return (_interval, start, end)
 
-    def fetch(self, rrdfiles, type, resolution, interval):
+    def fetch(self, rrdfiles, fn, resolution, interval, type):
         (interval, start, end) = self._analysisInterval(interval)
 
         plugin = pluginService.getRrd()
-        datas = plugin.fetch(rrdfiles, type, resolution, start, end)
+        datas = plugin.fetch(rrdfiles, fn, resolution, start, end)
 
         ret = self._formatting(rrdfiles, datas, interval)
         return ret
@@ -82,12 +83,11 @@ class RrdService:
         ret["format"] = format["rrd"][str_interval]
         ret["rrd"] = {}
         ret["datasets"] = {}
-        #ret["type"] = type
 
         for rrdfile in rrdfiles:
             # ((1316691840, 1316778720, 480), ('value',), [(99.457395833333337,), ...
             data = datas[rrdfile]
-            (type, name) = self._getSelection(rrdfile)
+            (fn, name) = self._getSelection(rrdfile)
 
             # rrd
             ret["rrd"][name] = {}

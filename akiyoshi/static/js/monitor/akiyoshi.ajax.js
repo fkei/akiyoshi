@@ -12,7 +12,7 @@ $.akiyoshi.addHandler("ajax", new function() {
             dataType: "json",
             statusCode: {
 				404: function() {
-					alert("404");
+					//alert("404");
 				}
 			}
         });
@@ -157,31 +157,41 @@ $.akiyoshi.addHandler("ajax", new function() {
 
     this._ajax_beforeSend = function(jqXHR, settings) {
         // TODO: beforre request
+        //alert("this._ajax_beforeSend")
     };
 
     this._ajax_complete = function(jqXHR, textStatus) {
         // TODO: response process
         if(XMLHttpRequest.status === "202") {
             // TODO: HTTP return code : Accepted
+            //alert("_ajax_complete#202");
         } else if(XMLHttpRequest.status === "204") {
             // TODO: HTTP return code : No Content
+            //alert("_ajax_complete#204");
+        } else {
+            //alert("_ajax_complete#other");
         }
     };
     this._ajax_error = function (jqXHR, textStatus, errorThrown) {
         var content = jQuery.parseJSON(jqXHR.responseText);
         // TODO error handring.
         alert(content.error.name + " : " + content.error.message);
-
+        alert("_ajax_error");
         if(jqXHR.status === "400") {
             // TODO: HTTP return code : Bad Request
+            alert("_ajax_error#400");
         } else if (jqXHR.status === "404") {
             // TODO: HTTP return code : Not Found
+            alert("_ajax_error#404");
         } else if (jqXHR.status === "405") {
             // TODO: HTTP return code : Method Not Allowed
+            alert("_ajax_error#405");
         } else if (jqXHR.status === "409") {
             // TODO: HTTP return code : Conflict
+            alert("_ajax_error#409");
         } else {
             // TODO: HTTP return code : Illegal Error
+            alert("_ajax_error#Illegal Error");
         }
     };
 });

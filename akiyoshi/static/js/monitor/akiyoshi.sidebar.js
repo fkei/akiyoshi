@@ -39,11 +39,11 @@ $.akiyoshi.addHandler("sidebar", new function() {
 				for (var i = 0; i < data.length; i++) {
 					$(this).tag("dt")
 						.tag("a", {"class": "cursor", id: data[i].name}).text(data[i].name).click(function() {
-                            $.akiyoshi.content.info("main", $(this).attr("id"));
+                            $.akiyoshi.content.info("main", $(this).attr("id"), {type: "tag"});
                             $.akiyoshi.action.update([
-                                {name:"Home", link:"/"},
+                                {name:"Monitor", link:"/monitor"},
                                 {name:"Group - " + $(this).attr("id")}
-                            ])
+                            ]);
                         }).gat()
 					    .gat();
 				}

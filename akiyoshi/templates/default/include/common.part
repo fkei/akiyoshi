@@ -1,0 +1,66 @@
+<%def name="css()">
+<link rel="stylesheet" type="text/css" href="/static/lib/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+</%def>
+
+<%def name="jquery()">
+<script type="text/javascript" src="/static/lib/jquery-1.6.2.min.js" charset="utf-8"></script>
+</%def>
+
+<%def name="jquery_plugin()">
+<script type="text/javascript" src="/static/lib/jquery.tablesorter.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/jquery.tag.js" charset="utf-8"></script>
+</%def>
+
+<%def name="twitter_bootstrap()">
+<script type="text/javascript" src="/static/lib/bootstrap-twipsy.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/bootstrap-alerts.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/bootstrap-dropdown.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/bootstrap-modal.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/bootstrap-popover.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/bootstrap-scrollspy.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/bootstrap-tabs.js" charset="utf-8"></script>
+</%def>
+
+<%def name="jquery_flot()">
+<!--[if lte IE 8]><script type="text/javascript" src="/static/lib/excanvas.min.js" charset="utf-8"></script><![endif]-->
+<script type="text/javascript" src="/static/lib/jquery.flot.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/jquery.colorhelpers.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/jquery.flot.categories.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/jquery.flot.crosshair.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/jquery.flot.fillbetween.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/jquery.flot.image.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/jquery.flot.navigate.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/jquery.flot.pie.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/jquery.flot.resize.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/jquery.flot.selection.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/jquery.flot.stack.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/jquery.flot.symbol.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/jquery.flot.threshold.js" charset="utf-8"></script>
+</%def>
+
+<%def name="rrd_graph()">
+<script type="text/javascript" src="/static/lib/binaryXHR.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/rrdFile.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/rrdFilter.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/rrdFlot.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/rrdFlotMatrix.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/rrdFlotSupport.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/lib/rrdMultiFile.js" charset="utf-8"></script>
+</%def>
+
+<%def name="akiyoshi()">
+<script type="text/javascript" src="/static/js/jquery.akiyoshi.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/monitor/akiyoshi.ajax.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/monitor/akiyoshi.bootstrap.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/monitor/akiyoshi.util.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/monitor/akiyoshi.rrd.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/monitor/akiyoshi.flot.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/monitor/akiyoshi.node.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/monitor/akiyoshi.monitor.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/monitor/akiyoshi.group.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/monitor/akiyoshi.sidebar.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/monitor/akiyoshi.action.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/monitor/akiyoshi.content.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/monitor/akiyoshi.test.js" charset="utf-8"></script>
+</%def>
