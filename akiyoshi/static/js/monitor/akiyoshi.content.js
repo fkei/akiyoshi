@@ -169,32 +169,38 @@ $.akiyoshi.addHandler("content", new function() {
                                         var types = link.type;
                                         for (var k = 0; k < types.length; k++) {
                                             var type = types[k];
-                                            $(this)
-                                            .tag("li")
-                                                .tag("label")
-                                                    .tag("input", {type: "checkbox", id:type, name: type, checked:"checked",
-                                                                   value: type, link: link.url, parent: link.name}).click(function() {
-                                                        // Custom RRD
-                                                        var nowTypes = [];
-                                                        $(this).closest(".choices").find("input:checked").each(function(idx, elem) {
-                                                            nowTypes.push($(this).attr("value"));
-                                                        });
-                                                        if (nowTypes.length < 1) {
-                                                            alert("TODO not checked");
-                                                            return false;
-                                                        }
-                                                        var link = $(this).attr("link");
-                                                        var url =  link + extension + '?interval=' + param.interval + "&types=" + nowTypes.join(",") + "&type=" + param.type;
-                                                        var elem = $("#"+$(this).attr("parent"));
-                                                        var img = elem.find("img:.thumbnail");
-                                                        img.attr("src", url);
-                                                        ;
-                                                    })
+                                            if (param.type === "compare") {
+                                                // TODO 
+                                            } else {
+                                                // --
+                                                $(this)
+                                                .tag("li")
+                                                    .tag("label")
+                                                        .tag("input", {type: "checkbox", id:type, name: type, checked:"checked",
+                                                                       value: type, link: link.url, parent: link.name}).click(function() {
+                                                            // Custom RRD
+                                                            var nowTypes = [];
+                                                            $(this).closest(".choices").find("input:checked").each(function(idx, elem) {
+                                                                nowTypes.push($(this).attr("value"));
+                                                            });
+                                                            if (nowTypes.length < 1) {
+                                                                alert("TODO not checked");
+                                                                return false;
+                                                            }
+                                                            var link = $(this).attr("link");
+                                                            var url =  link + extension + '?interval=' + param.interval + "&types=" + nowTypes.join(",") + "&type=" + param.type;
+                                                            var elem = $("#"+$(this).attr("parent"));
+                                                            var img = elem.find("img:.thumbnail");
+                                                            console.log(url);
+                                                            img.attr("src", url);
+                                                            ;
+                                                        })
+                                                    .gat()
+                                                    .tag("span", {sytle: "padding-left: 4px;"}).text(type).gat()
                                                 .gat()
-                                                .tag("span", {sytle: "padding-left: 4px;"}).text(type).gat()
                                             .gat()
-                                        .gat()
-                                        ;
+                                            ;
+                                            }
                                         }
                                     })
                                 .gat()
@@ -229,6 +235,7 @@ $.akiyoshi.addHandler("content", new function() {
                 }).gat()
             .gat()
             .next(function() {
+                debugger;
                 for (var i = 0; i < result.length; i++) {
                     var data = result[i];
                     for (var j = 0; j < data.links.length; j++) {
