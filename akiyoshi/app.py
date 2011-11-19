@@ -30,7 +30,8 @@ def main():
     print urls_val
     app = web.application(urls_val, globals(), autoreload=True)
     app.internalerror = web.debugerror
-    sys.argv = [] # web.py argv clean.
+
+    sys.argv = [sys.argv[0], akiyoshi.config.listen] # argv setup!!
 
     # load processor!!
     app.add_processor(processor.load_database)
